@@ -7,6 +7,12 @@
 (yas/global-mode 1)
 (setq load-path (cons "/opt/local/share/gtags/" load-path))
 (autoload 'gtags-mode "gtags" "" t)
-(setq c-mode-hook
+(setq cc-mode-hook
       '(lambda ()
 	 (gtags-mode 1)))
+(setq inhibit-startup-message t)
+
+;; Keyboard shortcuts
+(global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "C-h") 'delete-backward-char)
+(global-set-key (kbd "M-h") 'backward-kill-word)
