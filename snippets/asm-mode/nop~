@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: nop
+# key: nop
+# --
+sll	$0,$0,0
