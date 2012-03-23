@@ -7,6 +7,6 @@
 (yas/global-mode 1)
 (setq load-path (cons "/opt/local/share/gtags/" load-path))
 (autoload 'gtags-mode "gtags" "" t)
-(setq cc-mode-hook
+(setq c-mode-hook
       '(lambda ()
 	 (gtags-mode 1)))
