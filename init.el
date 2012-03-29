@@ -16,3 +16,4 @@
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-h") 'delete-backward-char)
 (global-set-key (kbd "M-h") 'backward-kill-word)
+(global-set-key (kbd "C-c c") 'compile)
