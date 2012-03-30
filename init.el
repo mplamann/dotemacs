@@ -17,3 +17,7 @@
 (global-set-key (kbd "C-h") 'delete-backward-char)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 (global-set-key (kbd "C-c c") 'compile)
+(global-set-key (kbd "C-x h") 'help-command)
+
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+(require 'anythingMatchPlugin)
