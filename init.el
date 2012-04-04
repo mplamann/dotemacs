@@ -12,6 +12,10 @@
 	 (gtags-mode 1)))
 (setq inhibit-startup-message t)
 
+(setq text-mode-hook
+      '(lambda ()
+	 (flyspell-mode 1)))
+
 ;; Keyboard shortcuts
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-h") 'delete-backward-char)
