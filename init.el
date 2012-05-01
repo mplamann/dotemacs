@@ -24,4 +24,5 @@
 (global-set-key (kbd "C-x h") 'help-command)
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
-(require 'anythingMatchPlugin)
+;(require 'anythingMatchPlugin)
+(menu-bar-mode 0)
