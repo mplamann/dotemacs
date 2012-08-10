@@ -1,20 +1,44 @@
+(require 'cl)
+(require 'package)
+(add-to-list 'package-archives
+	     '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(package-initialize)
+(defvar prelude-packages
+  '(haskell-mode python gtags))
+(defun prelude-packages-installed-p ()
+  (loop for p in prelude-packages
+	when (not (package-installed-p p)) do (return nil)
+	finally (return t)))
+(unless (prelude-packages-installed-p)
+  ;; check for new packages (package versions)
+  (message "%s" "Emacs Prelude is now refreshing its package database...")
+  (package-refresh-contents)
+  (message "%s" " done/")
+  ;; install the missing packages
+  (dolist (p prelude-packages)
+    (when (not (package-installed-p p))
+      (package-install p))))
+
 ;(setq asm-comment-char ?\#) ;; This is MIPS assembly, uses # for comments
 (setq auto-mode-alist (cons '("\\.asmnes$" . asm-mode) auto-mode-alist))
 
-;(add-to-list 'load-path
-;	     "~/.emacs.d/plugins/yasnippet")
-;(require 'yasnippet)
-;(yas/global-mode 1)
-(setq load-path (cons "/opt/local/share/gtags/" load-path))
-(autoload 'gtags-mode "gtags" "" t)
-(setq cc-mode-hook
-      '(lambda ()
-	 (gtags-mode 1)))
 (setq inhibit-startup-message t)
+(setq make-backup-files nil)
 
 (setq text-mode-hook
       '(lambda ()
 	 (flyspell-mode 1)))
+
+(iswitchb-mode 1) ;; improved buffer switching
+(menu-bar-mode 0)
+(desktop-save-mode 1) ;; persistent sessions
+
+;; Haskell mode
+(load "~/.emacs.d/plugins/haskell-mode/haskell-site-file")
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
 ;; Keyboard shortcuts
 (global-set-key (kbd "RET") 'newline-and-indent)
@@ -22,7 +46,118 @@
 (global-set-key (kbd "M-h") 'backward-kill-word)
 (global-set-key (kbd "C-c c") 'compile)
 (global-set-key (kbd "C-x h") 'help-command)
+(global-set-key (kbd "C-x C-m") 'execute-extended-command)
+(global-set-key (kbd "C-c C-m") 'execute-extended-command)
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
-;(require 'anythingMatchPlugin)
-(menu-bar-mode 0)
+
+;; Persistent Scratch Buffer
+(defvar persistent-scratch-filename
+  "~/.emacs-persistent-scratch"
+  "Location of *scratch* file contents for persistent-scratch.")
+(defvar persistent-scratch-backup-directory
+  "~/.emacs-persistent-scratch-backups/"
+  "Location of backups of the *scratch* buffer contents for persistent-scratch.")
+(defun make-persistent-scratch-backup-name ()
+  "Create a filename to backup the current scratch file by
+   concatenating PERSISTENT-SCRATCH-BACKUP-DIRECTORY with the
+   current date and time."
+  (concat
+   persistent-scratch-backup-directory
+   (replace-regexp-in-string
+    (regexp-quote " ") "-" (current-time-string))))
+(defun save-persistent-scratch ()
+  "Write the contents of *scratch* to the file name
+   PERSISTENT-SCRATCH-FILENAME, making a backup copy in
+   PERSISTENT-SCRATCH-BACKUP-DIRECTORY."
+  (with-current-buffer (get-buffer "*scratch*")
+    (if (file-exists-p persistent-scratch-filename)
+	(copy-file persistent-scratch-filename
+		   (make-persistent-scratch-backup-name)))
+    (write-region (point-min) (point-max)
+		  persistent-scratch-filename)))
+(defun load-persistent-scratch ()
+  "Load the contents of PERSISTENT-SCRATCH-FILENAME into the
+   scratch buffer, clearing its contents first."
+  (if (file-exists-p persistent-scratch-filename)
+      (with-current-buffer (get-buffer "*scratch*")
+	(delete-region (point-min) (point-max))
+	(shell-command (format "cat %s" persistent-scratch-filename) (current-buffer)))))
+(load-persistent-scratch)
+(push #'save-persistent-scratch kill-emacs-hook)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; XCode integration
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; First of all, associate file extensions
+(setq auto-mode-alist
+      (cons '("\\.m$" . objc-mode) auto-mode-alist))
+(setq auto-mode-alist
+      (cons '("\\.mm$" . objc-mode) auto-mode-alist))
+(defun bh-choose-header-mode ()
+  (interactive)
+  (if (string-equal (substring (buffer-file-name) -2) ".h")
+      (progn
+	;; OK, we got a .h file, if a .m file exists we'll assume it's
+					; an objective c file. Otherwise, we'll look for a .cpp file.
+	(let ((dot-m-file (concat (substring (buffer-file-name) 0 -1) "m"))
+	      (dot-cpp-file (concat (substring (buffer-file-name) 0 -1) "cpp")))
+	  (if (file-exists-p dot-m-file)
+	      (progn
+		(objc-mode))
+	    (if (file-exists-p dot-cpp-file)
+		(c++-mode)
+	      )
+	    )
+	  )
+	)
+    )
+  )
+(add-hook 'find-file-hook 'bh-choose-header-mode)
+(defun bh-compile ()
+  (interactive)
+  (let ((df (directory-files "."))
+	(has-proj-file nil)
+	)
+    (while (and df (not has-proj-file))
+      (let ((fn (car df)))
+	(if (> (length fn) 10)
+	    (if (string-equal (substring fn -10) ".xcodeproj")
+		(setq has-proj-file t)
+	      )
+	  )
+	)
+      (setq df (cdr df))
+      )
+    (if has-proj-file
+	(compile "xcodebuild -configuration Debug")
+      (compile "make")
+      )
+    )
+  )
+
+;; GTags
+(add-hook 'objc-mode-hook
+	  (lambda ()
+	    (require 'gtags)
+	    (gtags-mode t)
+	    (djcb-gtags-create-or-update)))
+
+(add-hook 'gtags-mode-hook
+	  (lambda ()
+	    (local-set-key (kbd "M-.") 'gtags-find-tag)
+	    (local-set-key (kbd "M-,") 'gtags-fing-rtag)))
+
+(defun djcb-gtags-create-or-update ()
+  "create or update the gnu global tag file"
+  (interactive)
+  (if (not (= 0 (call-process "global" nil nil nil " -p"))) ; tagfile doesn't exist?
+      (let ((olddir default-directory)
+	    (topdir (read-directory-name
+		     "gtags: top of source tree:" default-directory)))
+	(cd topdir)
+	(shell-command "gtags && echo 'created tagfile'")
+	(cd olddir)) ; restore
+    ;;  tagfile already exists; update it
+    (shell-command "global -u && echo 'updated tagfile'")))
