@@ -21,6 +21,10 @@
     (when (not (package-installed-p p))
       (package-install p))))
 
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
+(require 'ahk-mode)
+
 ;(setq asm-comment-char ?\#) ;; This is MIPS assembly, uses # for comments
 (setq auto-mode-alist (cons '("\\.asmnes$" . asm-mode) auto-mode-alist))
 
@@ -48,6 +52,7 @@
 (global-set-key (kbd "C-x h") 'help-command)
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-c C-m") 'execute-extended-command)
+(global-set-key (kbd "C-z") 'undo)
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
@@ -83,8 +88,8 @@
       (with-current-buffer (get-buffer "*scratch*")
 	(delete-region (point-min) (point-max))
 	(shell-command (format "cat %s" persistent-scratch-filename) (current-buffer)))))
-(load-persistent-scratch)
-(push #'save-persistent-scratch kill-emacs-hook)
+;;(load-persistent-scratch)
+;;(push #'save-persistent-scratch kill-emacs-hook)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; XCode integration
