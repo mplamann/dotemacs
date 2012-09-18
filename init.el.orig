@@ -6,7 +6,7 @@
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups))
+  '(haskell-mode python quack paredit gnus))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -20,10 +20,6 @@
   (dolist (p prelude-packages)
     (when (not (package-installed-p p))
       (package-install p))))
-
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-
-(require 'ahk-mode)
 
 ;(setq asm-comment-char ?\#) ;; This is MIPS assembly, uses # for comments
 (setq auto-mode-alist (cons '("\\.asmnes$" . asm-mode) auto-mode-alist))
@@ -56,8 +52,6 @@
 (add-hook 'quack-mode-hook            (lambda () (paredit-mode +1)))
 (add-hook 'geiser-repl-mode-hook      (lambda () (paredit-mode +1)))
 (setq scheme-program-name "racket")
-(add-hook 'c-mode-common-hook
-	  (lambda () (subword-mode 1)))
 ;; NOTE TO SELF: C-c C-a, bound to geiser-mode-switch-to-repl-and-enter, runs a file easily
 
 
@@ -69,12 +63,9 @@
 (global-set-key (kbd "C-x h") 'help-command)
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-c C-m") 'execute-extended-command)
+(global-set-key (kbd "C-z") 'undo)
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
-
-;; Workgroups
-(require 'workgroups)
-(workgroups-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; XCode integration
