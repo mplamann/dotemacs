@@ -6,7 +6,7 @@
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -38,6 +38,8 @@
 (iswitchb-mode 1) ;; improved buffer switching
 (menu-bar-mode 0)
 (desktop-save-mode 1) ;; persistent sessions
+(global-hl-line-mode 1) ;; highlight current line
+(require 'crosshairs)
 
 ;; Haskell mode
 (load "~/.emacs.d/plugins/haskell-mode/haskell-site-file")
@@ -69,6 +71,12 @@
 (global-set-key (kbd "C-x h") 'help-command)
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-c C-m") 'execute-extended-command)
+
+(global-set-key (kbd "C-c b")  'windmove-left)
+(global-set-key (kbd "C-c f") 'windmove-right)
+(global-set-key (kbd "C-c p")    'windmove-up)
+(global-set-key (kbd "C-c n")  'windmove-down)
+(setq windmove-wrap-around t)
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
@@ -151,3 +159,7 @@
 	(cd olddir)) ; restore
     ;;  tagfile already exists; update it
     (shell-command "global -u && echo 'updated tagfile'")))
+
+
+(setq scroll-step            1
+      scroll-conservatively  10000)
