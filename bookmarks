@@ -1,0 +1,25 @@
+;;;; Emacs Bookmark Format Version 1 ;;;;
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("CV_desync_incorrect_with_SL"
+ (filename . "~/NESEmulator/log/castlevania.12.18.log")
+ (front-context-string . "C19F  68 60 E6  ")
+ (rear-context-string . "CYC: 33 SL: 240\n")
+ (position . 8372793))
+("CV_Desync_incorrect"
+ (filename . "~/NESEmulator/log/castlevania.12.17.log")
+ (front-context-string . "C19F  68 60 E6  ")
+ (rear-context-string . "5 SP:F5 CYC: 33\n")
+ (position . 7669008))
+("CV_desync_correct"
+ (filename . "~/NESEmulator/log/Castlevania.20121112_082446.debug")
+ (front-context-string . "C19F  68        ")
+ (rear-context-string . " CYC:145 SL:230\n")
+ (position . 9004865))
+("desync"
+ (filename . "~/NESEmulator/log/nestestUpToDesync.log")
+ (front-context-string . "C6BC  28        ")
+ (rear-context-string . " CYC: 47 SL:107\n")
+ (position . 441067))
+)

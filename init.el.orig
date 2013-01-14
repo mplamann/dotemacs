@@ -6,7 +6,11 @@
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit gnus))
+<<<<<<< HEAD
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight))
+=======
+  '(haskell-mode python quack paredit workgroups))
+>>>>>>> fc265b6973606bf6c101f5d189966361ae0adefb
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -21,6 +25,10 @@
     (when (not (package-installed-p p))
       (package-install p))))
 
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
+(require 'ahk-mode)
+
 ;(setq asm-comment-char ?\#) ;; This is MIPS assembly, uses # for comments
 (setq auto-mode-alist (cons '("\\.asmnes$" . asm-mode) auto-mode-alist))
 
@@ -34,6 +42,8 @@
 (iswitchb-mode 1) ;; improved buffer switching
 (menu-bar-mode 0)
 (desktop-save-mode 1) ;; persistent sessions
+(global-hl-line-mode 1) ;; highlight current line
+(require 'crosshairs)
 
 ;; Haskell mode
 (load "~/.emacs.d/plugins/haskell-mode/haskell-site-file")
@@ -52,6 +62,8 @@
 (add-hook 'quack-mode-hook            (lambda () (paredit-mode +1)))
 (add-hook 'geiser-repl-mode-hook      (lambda () (paredit-mode +1)))
 (setq scheme-program-name "racket")
+(add-hook 'c-mode-common-hook
+	  (lambda () (subword-mode 1)))
 ;; NOTE TO SELF: C-c C-a, bound to geiser-mode-switch-to-repl-and-enter, runs a file easily
 
 
@@ -63,9 +75,25 @@
 (global-set-key (kbd "C-x h") 'help-command)
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-c C-m") 'execute-extended-command)
-(global-set-key (kbd "C-z") 'undo)
+<<<<<<< HEAD
+
+(global-set-key (kbd "C-c b")  'windmove-left)
+(global-set-key (kbd "C-c f") 'windmove-right)
+(global-set-key (kbd "C-c p")    'windmove-up)
+(global-set-key (kbd "C-c n")  'windmove-down)
+(setq windmove-wrap-around t)
+=======
+>>>>>>> fc265b6973606bf6c101f5d189966361ae0adefb
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+
+;; Workgroups
+(require 'workgroups)
+<<<<<<< HEAD
+=======
+(setq wg-prefix-key (kbd "C-z"))
+>>>>>>> fc265b6973606bf6c101f5d189966361ae0adefb
+(workgroups-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; XCode integration
@@ -117,6 +145,7 @@
       )
     )
   )
+<<<<<<< HEAD
 
 ;; GTags
 (add-hook 'objc-mode-hook
@@ -142,3 +171,9 @@
 	(cd olddir)) ; restore
     ;;  tagfile already exists; update it
     (shell-command "global -u && echo 'updated tagfile'")))
+
+
+(setq scroll-step            1
+      scroll-conservatively  10000)
+=======
+>>>>>>> fc265b6973606bf6c101f5d189966361ae0adefb

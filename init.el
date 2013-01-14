@@ -6,7 +6,7 @@
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight sunrise-commander))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -24,12 +24,14 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
 (require 'ahk-mode)
+(require 'git)
 
 ;(setq asm-comment-char ?\#) ;; This is MIPS assembly, uses # for comments
 (setq auto-mode-alist (cons '("\\.asmnes$" . asm-mode) auto-mode-alist))
 
 (setq inhibit-startup-message t)
 (setq make-backup-files nil)
+(setq large-file-warning-threshold 100000000) ; Warn for files > 100 MB
 
 (setq text-mode-hook
       '(lambda ()
@@ -71,6 +73,9 @@
 (global-set-key (kbd "C-x h") 'help-command)
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-c C-m") 'execute-extended-command)
+(global-set-key (kbd "C-c o") 'ff-find-other-file)
+(global-set-key (kbd "C-c g") 'gdb-many-windows)
+(global-set-key (kbd "C-c r") 'revert-buffer)
 
 (global-set-key (kbd "C-c b")  'windmove-left)
 (global-set-key (kbd "C-c f") 'windmove-right)
@@ -80,10 +85,18 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
+(fset 'both-prev-page
+   "\C-[v\C-xo\C-[v")
+
+(global-set-key (kbd "C-M-p") 'both-prev-page)
+(global-set-key (kbd "C-M-v") 'both-next-page)
+
+
 ;; Workgroups
 (require 'workgroups)
 (setq wg-prefix-key (kbd "C-z"))
 (workgroups-mode 1)
+(wg-load "~/.emacs.d/workgroups")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; XCode integration
@@ -135,3 +148,6 @@
       )
     )
   )
+
+(setq scroll-step            1
+      scroll-conservatively  10000)
