@@ -1,3 +1,4 @@
+;; Packaging
 (require 'cl)
 (require 'package)
 (add-to-list 'package-archives
@@ -6,7 +7,7 @@
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight sunrise-commander))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight sunrise-commander slime))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -23,25 +24,32 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
+;; Requires
 (require 'ahk-mode)
 (require 'git)
+(require 'crosshairs)
 
-;(setq asm-comment-char ?\#) ;; This is MIPS assembly, uses # for comments
-(setq auto-mode-alist (cons '("\\.asmnes$" . asm-mode) auto-mode-alist))
+;; General emacs settings
 
 (setq inhibit-startup-message t)
 (setq make-backup-files nil)
-(setq large-file-warning-threshold 100000000) ; Warn for files > 100 MB
-
-(setq text-mode-hook
-      '(lambda ()
-	 (flyspell-mode 1)))
+(setq large-file-warning-threshold 200000000) ; Warn for files > 200 MB
 
 (iswitchb-mode 1) ;; improved buffer switching
 (menu-bar-mode 0)
 (desktop-save-mode 1) ;; persistent sessions
-(global-hl-line-mode 1) ;; highlight current line
-(require 'crosshairs)
+
+(setq scroll-step            1
+      scroll-conservatively  10000)
+
+(add-hook 'c-mode-common-hook
+	  (lambda () (subword-mode 1)))
+
+;; Text mode
+
+(setq text-mode-hook
+      '(lambda ()
+	 (flyspell-mode 1)))
 
 ;; Haskell mode
 (load "~/.emacs.d/plugins/haskell-mode/haskell-site-file")
@@ -60,9 +68,20 @@
 (add-hook 'quack-mode-hook            (lambda () (paredit-mode +1)))
 (add-hook 'geiser-repl-mode-hook      (lambda () (paredit-mode +1)))
 (setq scheme-program-name "racket")
-(add-hook 'c-mode-common-hook
-	  (lambda () (subword-mode 1)))
-;; NOTE TO SELF: C-c C-a, bound to geiser-mode-switch-to-repl-and-enter, runs a file easily
+
+;; SLIME for Common Lisp
+(require 'slime-autoloads)
+(if (eq system-type 'windows-nt)
+    (setq inferior-lisp-program "clisp.exe")
+  (setq inferior-lisp-program "sbcl"))
+(add-hook 'lisp-mode-hook
+	  (lambda () (global-set-key (kbd "C-c c") 'slime-compile-and-load-file)))
+
+;; NOTE! If Slime does not work, giving some cl error, do this:
+;; Open up slime.el and change the line at the bottom from
+;; lexical-binding: t
+;; to
+;; lexical-binding: nil
 
 
 ;; Keyboard shortcuts
@@ -83,8 +102,6 @@
 (global-set-key (kbd "C-c n")  'windmove-down)
 (setq windmove-wrap-around t)
 
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-
 (fset 'both-prev-page
    "\C-[v\C-xo\C-[v")
 
@@ -97,57 +114,3 @@
 (setq wg-prefix-key (kbd "C-z"))
 (workgroups-mode 1)
 (wg-load "~/.emacs.d/workgroups")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; XCode integration
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; First of all, associate file extensions
-(setq auto-mode-alist
-      (cons '("\\.m$" . objc-mode) auto-mode-alist))
-(setq auto-mode-alist
-      (cons '("\\.mm$" . objc-mode) auto-mode-alist))
-(defun bh-choose-header-mode ()
-  (interactive)
-  (if (string-equal (substring (buffer-file-name) -2) ".h")
-      (progn
-	;; OK, we got a .h file, if a .m file exists we'll assume it's
-					; an objective c file. Otherwise, we'll look for a .cpp file.
-	(let ((dot-m-file (concat (substring (buffer-file-name) 0 -1) "m"))
-	      (dot-cpp-file (concat (substring (buffer-file-name) 0 -1) "cpp")))
-	  (if (file-exists-p dot-m-file)
-	      (progn
-		(objc-mode))
-	    (if (file-exists-p dot-cpp-file)
-		(c++-mode)
-	      )
-	    )
-	  )
-	)
-    )
-  )
-(add-hook 'find-file-hook 'bh-choose-header-mode)
-(defun bh-compile ()
-  (interactive)
-  (let ((df (directory-files "."))
-	(has-proj-file nil)
-	)
-    (while (and df (not has-proj-file))
-      (let ((fn (car df)))
-	(if (> (length fn) 10)
-	    (if (string-equal (substring fn -10) ".xcodeproj")
-		(setq has-proj-file t)
-	      )
-	  )
-	)
-      (setq df (cdr df))
-      )
-    (if has-proj-file
-	(compile "xcodebuild -configuration Debug")
-      (compile "make")
-      )
-    )
-  )
-
-(setq scroll-step            1
-      scroll-conservatively  10000)
