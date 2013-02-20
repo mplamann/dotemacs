@@ -73,7 +73,7 @@
 (require 'slime-autoloads)
 (if (eq system-type 'windows-nt)
     (setq inferior-lisp-program "clisp.exe")
-  (setq inferior-lisp-program "sbcl"))
+  (setq inferior-lisp-program "clisp"))
 (add-hook 'lisp-mode-hook
 	  (lambda () (global-set-key (kbd "C-c c") 'slime-compile-and-load-file)))
 
