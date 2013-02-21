@@ -6,7 +6,7 @@
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight sunrise-commander))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight sunrise-commander yasnippet))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -25,6 +25,7 @@
 
 (require 'ahk-mode)
 (require 'git)
+(require 'yasnippet)
 
 ;(setq asm-comment-char ?\#) ;; This is MIPS assembly, uses # for comments
 (setq auto-mode-alist (cons '("\\.asmnes$" . asm-mode) auto-mode-alist))
@@ -76,6 +77,7 @@
 (global-set-key (kbd "C-c o") 'ff-find-other-file)
 (global-set-key (kbd "C-c g") 'gdb-many-windows)
 (global-set-key (kbd "C-c r") 'revert-buffer)
+(global-set-key (kbd "C-c l") 'hl-line-mode)
 
 (global-set-key (kbd "C-c b")  'windmove-left)
 (global-set-key (kbd "C-c f") 'windmove-right)
