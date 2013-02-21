@@ -1,3 +1,4 @@
+;; Packaging
 (require 'cl)
 (require 'package)
 (add-to-list 'package-archives
@@ -7,10 +8,10 @@
 (package-initialize)
 (defvar prelude-packages
 <<<<<<< HEAD
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight sunrise-commander yasnippet))
 =======
-  '(haskell-mode python quack paredit workgroups))
->>>>>>> fc265b6973606bf6c101f5d189966361ae0adefb
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight sunrise-commander slime))
+>>>>>>> 1be6cfd864a6db1450d9d994023ba44942478dcc
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -27,23 +28,36 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
+;; Requires
 (require 'ahk-mode)
+(require 'git)
+<<<<<<< HEAD
+(require 'yasnippet)
+=======
+(require 'crosshairs)
+>>>>>>> 1be6cfd864a6db1450d9d994023ba44942478dcc
 
-;(setq asm-comment-char ?\#) ;; This is MIPS assembly, uses # for comments
-(setq auto-mode-alist (cons '("\\.asmnes$" . asm-mode) auto-mode-alist))
+;; General emacs settings
 
 (setq inhibit-startup-message t)
 (setq make-backup-files nil)
-
-(setq text-mode-hook
-      '(lambda ()
-	 (flyspell-mode 1)))
+(setq large-file-warning-threshold 200000000) ; Warn for files > 200 MB
 
 (iswitchb-mode 1) ;; improved buffer switching
 (menu-bar-mode 0)
 (desktop-save-mode 1) ;; persistent sessions
-(global-hl-line-mode 1) ;; highlight current line
-(require 'crosshairs)
+
+(setq scroll-step            1
+      scroll-conservatively  10000)
+
+(add-hook 'c-mode-common-hook
+	  (lambda () (subword-mode 1)))
+
+;; Text mode
+
+(setq text-mode-hook
+      '(lambda ()
+	 (flyspell-mode 1)))
 
 ;; Haskell mode
 (load "~/.emacs.d/plugins/haskell-mode/haskell-site-file")
@@ -62,9 +76,20 @@
 (add-hook 'quack-mode-hook            (lambda () (paredit-mode +1)))
 (add-hook 'geiser-repl-mode-hook      (lambda () (paredit-mode +1)))
 (setq scheme-program-name "racket")
-(add-hook 'c-mode-common-hook
-	  (lambda () (subword-mode 1)))
-;; NOTE TO SELF: C-c C-a, bound to geiser-mode-switch-to-repl-and-enter, runs a file easily
+
+;; SLIME for Common Lisp
+(require 'slime-autoloads)
+(if (eq system-type 'windows-nt)
+    (setq inferior-lisp-program "clisp.exe")
+  (setq inferior-lisp-program "sbcl"))
+(add-hook 'lisp-mode-hook
+	  (lambda () (global-set-key (kbd "C-c c") 'slime-compile-and-load-file)))
+
+;; NOTE! If Slime does not work, giving some cl error, do this:
+;; Open up slime.el and change the line at the bottom from
+;; lexical-binding: t
+;; to
+;; lexical-binding: nil
 
 
 ;; Keyboard shortcuts
@@ -75,105 +100,30 @@
 (global-set-key (kbd "C-x h") 'help-command)
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-c C-m") 'execute-extended-command)
+(global-set-key (kbd "C-c o") 'ff-find-other-file)
+(global-set-key (kbd "C-c g") 'gdb-many-windows)
+(global-set-key (kbd "C-c r") 'revert-buffer)
 <<<<<<< HEAD
+(global-set-key (kbd "C-c l") 'hl-line-mode)
+=======
+(global-set-key (kbd "C-x C-u") 'undo)
+>>>>>>> 1be6cfd864a6db1450d9d994023ba44942478dcc
 
 (global-set-key (kbd "C-c b")  'windmove-left)
 (global-set-key (kbd "C-c f") 'windmove-right)
 (global-set-key (kbd "C-c p")    'windmove-up)
 (global-set-key (kbd "C-c n")  'windmove-down)
 (setq windmove-wrap-around t)
-=======
->>>>>>> fc265b6973606bf6c101f5d189966361ae0adefb
 
-(add-to-list 'load-path "~/.emacs.d/lisp/")
+(fset 'both-prev-page
+   "\C-[v\C-xo\C-[v")
+
+(global-set-key (kbd "C-M-p") 'both-prev-page)
+(global-set-key (kbd "C-M-v") 'both-next-page)
+
 
 ;; Workgroups
 (require 'workgroups)
-<<<<<<< HEAD
-=======
 (setq wg-prefix-key (kbd "C-z"))
->>>>>>> fc265b6973606bf6c101f5d189966361ae0adefb
 (workgroups-mode 1)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; XCode integration
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; First of all, associate file extensions
-(setq auto-mode-alist
-      (cons '("\\.m$" . objc-mode) auto-mode-alist))
-(setq auto-mode-alist
-      (cons '("\\.mm$" . objc-mode) auto-mode-alist))
-(defun bh-choose-header-mode ()
-  (interactive)
-  (if (string-equal (substring (buffer-file-name) -2) ".h")
-      (progn
-	;; OK, we got a .h file, if a .m file exists we'll assume it's
-					; an objective c file. Otherwise, we'll look for a .cpp file.
-	(let ((dot-m-file (concat (substring (buffer-file-name) 0 -1) "m"))
-	      (dot-cpp-file (concat (substring (buffer-file-name) 0 -1) "cpp")))
-	  (if (file-exists-p dot-m-file)
-	      (progn
-		(objc-mode))
-	    (if (file-exists-p dot-cpp-file)
-		(c++-mode)
-	      )
-	    )
-	  )
-	)
-    )
-  )
-(add-hook 'find-file-hook 'bh-choose-header-mode)
-(defun bh-compile ()
-  (interactive)
-  (let ((df (directory-files "."))
-	(has-proj-file nil)
-	)
-    (while (and df (not has-proj-file))
-      (let ((fn (car df)))
-	(if (> (length fn) 10)
-	    (if (string-equal (substring fn -10) ".xcodeproj")
-		(setq has-proj-file t)
-	      )
-	  )
-	)
-      (setq df (cdr df))
-      )
-    (if has-proj-file
-	(compile "xcodebuild -configuration Debug")
-      (compile "make")
-      )
-    )
-  )
-<<<<<<< HEAD
-
-;; GTags
-(add-hook 'objc-mode-hook
-	  (lambda ()
-	    (require 'gtags)
-	    (gtags-mode t)
-	    (djcb-gtags-create-or-update)))
-
-(add-hook 'gtags-mode-hook
-	  (lambda ()
-	    (local-set-key (kbd "M-.") 'gtags-find-tag)
-	    (local-set-key (kbd "M-,") 'gtags-fing-rtag)))
-
-(defun djcb-gtags-create-or-update ()
-  "create or update the gnu global tag file"
-  (interactive)
-  (if (not (= 0 (call-process "global" nil nil nil " -p"))) ; tagfile doesn't exist?
-      (let ((olddir default-directory)
-	    (topdir (read-directory-name
-		     "gtags: top of source tree:" default-directory)))
-	(cd topdir)
-	(shell-command "gtags && echo 'created tagfile'")
-	(cd olddir)) ; restore
-    ;;  tagfile already exists; update it
-    (shell-command "global -u && echo 'updated tagfile'")))
-
-
-(setq scroll-step            1
-      scroll-conservatively  10000)
-=======
->>>>>>> fc265b6973606bf6c101f5d189966361ae0adefb
+(wg-load "~/.emacs.d/workgroups")

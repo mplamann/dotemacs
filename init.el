@@ -96,6 +96,7 @@
 (global-set-key (kbd "C-c g") 'gdb-many-windows)
 (global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key (kbd "C-x C-u") 'undo)
+(global-set-key (kbd "C-c l") 'hl-line-mode)
 
 (global-set-key (kbd "C-c b")  'windmove-left)
 (global-set-key (kbd "C-c f") 'windmove-right)
