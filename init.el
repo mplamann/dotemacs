@@ -73,7 +73,7 @@
 (require 'slime-autoloads)
 (if (eq system-type 'windows-nt)
     (setq inferior-lisp-program "clisp.exe")
-  (setq inferior-lisp-program "sbcl"))
+  (setq inferior-lisp-program "clisp"))
 (add-hook 'lisp-mode-hook
 	  (lambda () (global-set-key (kbd "C-c c") 'slime-compile-and-load-file)))
 
@@ -96,6 +96,7 @@
 (global-set-key (kbd "C-c g") 'gdb-many-windows)
 (global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key (kbd "C-x C-u") 'undo)
+(global-set-key (kbd "C-c l") 'hl-line-mode)
 
 (global-set-key (kbd "C-c b")  'windmove-left)
 (global-set-key (kbd "C-c f") 'windmove-right)
