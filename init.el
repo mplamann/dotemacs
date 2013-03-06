@@ -116,6 +116,13 @@
 (setq w32-lwindow-modifier 'meta)
 (setq w32-pass-lwindow-to-system nil)
 
+(defun cygwin-shell ()
+  "Run cygwin bash in shell mode."
+  (interactive)
+  (let ((explicit-shell-file-name "C:/cygwin/bin/bash")
+	(explicit-bash-args '("--login" "-i")))
+    (call-interactively 'shell)))
+
 ;; Workgroups
 (require 'workgroups)
 (setq wg-prefix-key (kbd "C-z"))
