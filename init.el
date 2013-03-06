@@ -75,7 +75,9 @@
     (setq inferior-lisp-program "clisp.exe")
   (setq inferior-lisp-program "sbcl"))
 (add-hook 'lisp-mode-hook
-	  (lambda () (global-set-key (kbd "C-c c") 'slime-compile-and-load-file)))
+	  (lambda () (local-set-key (kbd "C-c c") 'slime-compile-and-load-file)))
+(add-hook 'lisp-mode-hook
+	  (lambda () (slime-mode +1)))
 
 ;; NOTE! If Slime does not work, giving some cl error, do this:
 ;; Open up slime.el and change the line at the bottom from
@@ -109,6 +111,14 @@
 
 (global-set-key (kbd "C-M-p") 'both-prev-page)
 (global-set-key (kbd "C-M-v") 'both-next-page)
+
+;; Mac Compatibility (Terminal is a pain)
+(global-set-key (kbd "M-[ 5 d") 'backward-word)
+(global-set-key (kbd "M-[ 5 c") 'forward-word)
+(add-hook 'paredit-mode-hook
+	  (lambda ()
+	    (local-set-key (kbd "M-[ 5 d") 'paredit-forward-barf-sexp)
+	    (local-set-key (kbd "M-[ 5 c") 'paredit-forward-slurp-sexp)))
 
 
 ;; Workgroups
