@@ -5,9 +5,11 @@
 	     '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives
+	     '("elpa" . "http://elpa.gnu.org/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight sunrise-commander slime))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight sunrise-commander slime auctex))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -72,8 +74,8 @@
 ;; SLIME for Common Lisp
 (require 'slime-autoloads)
 (if (eq system-type 'windows-nt)
-    (setq inferior-lisp-program "clisp.exe")
-  (setq inferior-lisp-program "sbcl"))
+    (setq inferior-lisp-program "sbcl.exe")
+  (setq inferior-lisp-program "clisp"))
 (add-hook 'lisp-mode-hook
 	  (lambda () (local-set-key (kbd "C-c c") 'slime-compile-and-load-file)))
 (add-hook 'lisp-mode-hook
@@ -112,6 +114,9 @@
 (global-set-key (kbd "C-M-p") 'both-prev-page)
 (global-set-key (kbd "C-M-v") 'both-next-page)
 
+;; Windows-specific
+(setq w32-lwindow-modifier 'meta)
+(setq w32-pass-lwindow-to-system nil)
 ;; Mac Compatibility (Terminal is a pain)
 (global-set-key (kbd "M-[ 5 d") 'backward-word)
 (global-set-key (kbd "M-[ 5 c") 'forward-word)
