@@ -5,9 +5,11 @@
 	     '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives
+	     '("elpa" . "http://elpa.gnu.org/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight sunrise-commander slime))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight sunrise-commander slime auctex))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -72,7 +74,7 @@
 ;; SLIME for Common Lisp
 (require 'slime-autoloads)
 (if (eq system-type 'windows-nt)
-    (setq inferior-lisp-program "clisp.exe")
+    (setq inferior-lisp-program "sbcl.exe")
   (setq inferior-lisp-program "clisp"))
 (add-hook 'lisp-mode-hook
 	  (lambda () (global-set-key (kbd "C-c c") 'slime-compile-and-load-file)))
@@ -110,9 +112,24 @@
 (global-set-key (kbd "C-M-p") 'both-prev-page)
 (global-set-key (kbd "C-M-v") 'both-next-page)
 
+;; Windows-specific
+(setq w32-lwindow-modifier 'meta)
+(setq w32-pass-lwindow-to-system nil)
 
 ;; Workgroups
 (require 'workgroups)
 (setq wg-prefix-key (kbd "C-z"))
 (workgroups-mode 1)
 (wg-load "~/.emacs.d/workgroups")
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ahk-syntax-directory "~/.emacs.d/emacs.ahk"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
