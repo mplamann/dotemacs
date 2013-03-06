@@ -77,7 +77,9 @@
     (setq inferior-lisp-program "sbcl.exe")
   (setq inferior-lisp-program "clisp"))
 (add-hook 'lisp-mode-hook
-	  (lambda () (global-set-key (kbd "C-c c") 'slime-compile-and-load-file)))
+	  (lambda () (local-set-key (kbd "C-c c") 'slime-compile-and-load-file)))
+(add-hook 'lisp-mode-hook
+	  (lambda () (slime-mode +1)))
 
 ;; NOTE! If Slime does not work, giving some cl error, do this:
 ;; Open up slime.el and change the line at the bottom from
@@ -115,6 +117,14 @@
 ;; Windows-specific
 (setq w32-lwindow-modifier 'meta)
 (setq w32-pass-lwindow-to-system nil)
+;; Mac Compatibility (Terminal is a pain)
+(global-set-key (kbd "M-[ 5 d") 'backward-word)
+(global-set-key (kbd "M-[ 5 c") 'forward-word)
+(add-hook 'paredit-mode-hook
+	  (lambda ()
+	    (local-set-key (kbd "M-[ 5 d") 'paredit-forward-barf-sexp)
+	    (local-set-key (kbd "M-[ 5 c") 'paredit-forward-slurp-sexp)))
+
 
 (defun cygwin-shell ()
   "Run cygwin bash in shell mode."
@@ -128,15 +138,3 @@
 (setq wg-prefix-key (kbd "C-z"))
 (workgroups-mode 1)
 (wg-load "~/.emacs.d/workgroups")
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ahk-syntax-directory "~/.emacs.d/emacs.ahk"))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
