@@ -9,7 +9,7 @@
 	     '("elpa" . "http://elpa.gnu.org/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight sunrise-commander slime auctex))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex zenburn-theme))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -44,8 +44,10 @@
 (setq scroll-step            1
       scroll-conservatively  10000)
 
-(add-hook 'c-mode-common-hook
-	  (lambda () (subword-mode 1)))
+;; (add-hook 'c-mode-common-hook
+;; 	  (lambda () (subword-mode 1)))
+(subword-mode 1)
+(load-theme 'zenburn t)
 
 ;; Text mode
 
