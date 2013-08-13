@@ -1,2 +1,4 @@
+CapsLock::LAlt
+
 #IfWinActive ahk_class Emacs
-LWin::LAlt
+LWin::Esc

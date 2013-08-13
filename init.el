@@ -9,7 +9,7 @@
 	     '("elpa" . "http://elpa.gnu.org/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight sunrise-commander slime auctex))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight sunrise-commander slime auctex cmake-mode evil rinari python-mode))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -27,9 +27,10 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
 ;; Requires
-(require 'ahk-mode)
 (require 'git)
 (require 'crosshairs)
+(require 'cmake-mode)
+(require 'mingus)
 
 ;; General emacs settings
 
@@ -40,18 +41,28 @@
 (iswitchb-mode 1) ;; improved buffer switching
 (menu-bar-mode 0)
 (desktop-save-mode 1) ;; persistent sessions
+(undo-tree-mode 0)
+(global-undo-tree-mode 0)
 
 (setq scroll-step            1
       scroll-conservatively  10000)
 
 (add-hook 'c-mode-common-hook
 	  (lambda () (subword-mode 1)))
+(add-hook 'haskell-mode-hook
+	  (lambda () (subword-mode 1)))
+(setq tramp-default-method "scp")
 
-;; Text mode
+(load "~/.emacs.d/elpa/python-mode-6.0.10/python-mode.el")
 
-(setq text-mode-hook
-      '(lambda ()
-	 (flyspell-mode 1)))
+;; CEDET
+;; (load-file "~/.emacs.d/lisp/cedet-1.1/common/cedet-load.el")
+;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode t)
+;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-completions-mode t)
+;; (add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode t)
+;; (semantic-mode 1)
+;; (global-ede-mode 1)
+;; (setq ede-arduino-appdir "")
 
 ;; Haskell mode
 (load "~/.emacs.d/plugins/haskell-mode/haskell-site-file")
@@ -90,6 +101,8 @@
 
 ;; Keyboard shortcuts
 (global-set-key (kbd "RET") 'newline-and-indent)
+(add-hook 'ruby-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
+(add-hook 'feature-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
 (global-set-key (kbd "C-h") 'delete-backward-char)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 (global-set-key (kbd "C-c c") 'compile)
@@ -101,6 +114,7 @@
 (global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key (kbd "C-x C-u") 'undo)
 (global-set-key (kbd "C-c l") 'hl-line-mode)
+(global-set-key (kbd "C-x C-b") 'iswitchb-buffer)
 
 (global-set-key (kbd "C-c b")  'windmove-left)
 (global-set-key (kbd "C-c f") 'windmove-right)
@@ -124,7 +138,6 @@
 	  (lambda ()
 	    (local-set-key (kbd "M-[ 5 d") 'paredit-forward-barf-sexp)
 	    (local-set-key (kbd "M-[ 5 c") 'paredit-forward-slurp-sexp)))
-
 
 (defun cygwin-shell ()
   "Run cygwin bash in shell mode."
