@@ -9,7 +9,7 @@
 	     '("elpa" . "http://elpa.gnu.org/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight sunrise-commander slime auctex cmake-mode evil rinari python-mode))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex cmake-mode rinari python-mode zenburn-theme))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -47,22 +47,10 @@
 (setq scroll-step            1
       scroll-conservatively  10000)
 
-(add-hook 'c-mode-common-hook
-	  (lambda () (subword-mode 1)))
-(add-hook 'haskell-mode-hook
-	  (lambda () (subword-mode 1)))
-(setq tramp-default-method "scp")
+(subword-mode 1)
+(load-theme 'zenburn t)
 
 (load "~/.emacs.d/elpa/python-mode-6.0.10/python-mode.el")
-
-;; CEDET
-;; (load-file "~/.emacs.d/lisp/cedet-1.1/common/cedet-load.el")
-;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode t)
-;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-completions-mode t)
-;; (add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode t)
-;; (semantic-mode 1)
-;; (global-ede-mode 1)
-;; (setq ede-arduino-appdir "")
 
 ;; Haskell mode
 (load "~/.emacs.d/plugins/haskell-mode/haskell-site-file")
