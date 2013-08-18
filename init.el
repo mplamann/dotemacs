@@ -9,7 +9,7 @@
 	     '("elpa" . "http://elpa.gnu.org/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex zenburn-theme))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex cmake-mode rinari python-mode zenburn-theme company auto-complete))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -27,10 +27,11 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
 ;; Requires
-(require 'ahk-mode)
 (require 'git)
 (require 'crosshairs)
 (require 'wc-mode)
+(require 'cmake-mode)
+(require 'mingus)
 
 ;; General emacs settings
 
@@ -41,20 +42,16 @@
 (iswitchb-mode 1) ;; improved buffer switching
 (menu-bar-mode 0)
 (desktop-save-mode 1) ;; persistent sessions
+(undo-tree-mode 0)
+(global-undo-tree-mode 0)
 
 (setq scroll-step            1
       scroll-conservatively  10000)
 
-;; (add-hook 'c-mode-common-hook
-;; 	  (lambda () (subword-mode 1)))
 (subword-mode 1)
 (load-theme 'zenburn t)
 
-;; Text mode
-
-(setq text-mode-hook
-      '(lambda ()
-	 (flyspell-mode 1)))
+(load "~/.emacs.d/elpa/python-mode-6.0.10/python-mode.el")
 
 ;; Haskell mode
 (load "~/.emacs.d/plugins/haskell-mode/haskell-site-file")
@@ -93,6 +90,8 @@
 
 ;; Keyboard shortcuts
 (global-set-key (kbd "RET") 'newline-and-indent)
+(add-hook 'ruby-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
+(add-hook 'feature-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
 (global-set-key (kbd "C-h") 'delete-backward-char)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 (global-set-key (kbd "C-c c") 'compile)
@@ -104,6 +103,8 @@
 (global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key (kbd "C-x C-u") 'undo)
 (global-set-key (kbd "C-c l") 'hl-line-mode)
+(global-set-key (kbd "C-x C-b") 'iswitchb-buffer)
+(global-set-key (kbd "<C-return>") 'dabbrev-expand)
 
 (global-set-key (kbd "C-c b")  'windmove-left)
 (global-set-key (kbd "C-c f") 'windmove-right)
@@ -130,6 +131,12 @@
 	    (local-set-key (kbd "M-[ 5 d") 'paredit-forward-barf-sexp)
 	    (local-set-key (kbd "M-[ 5 c") 'paredit-forward-slurp-sexp)))
 
+(defun cygwin-shell ()
+  "Run cygwin bash in shell mode."
+  (interactive)
+  (let ((explicit-shell-file-name "C:/cygwin/bin/bash")
+	(explicit-bash-args '("--login" "-i")))
+    (call-interactively 'shell)))
 
 ;; Workgroups
 (require 'workgroups)
