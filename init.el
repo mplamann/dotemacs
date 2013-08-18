@@ -30,6 +30,7 @@
 (require 'ahk-mode)
 (require 'git)
 (require 'crosshairs)
+(require 'wc-mode)
 
 ;; General emacs settings
 
@@ -112,6 +113,8 @@
 
 (fset 'both-prev-page
    "\C-[v\C-xo\C-[v")
+
+(add-hook 'ruby-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
 
 (global-set-key (kbd "C-M-p") 'both-prev-page)
 (global-set-key (kbd "C-M-v") 'both-next-page)
