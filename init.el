@@ -42,8 +42,8 @@
 (iswitchb-mode 1) ;; improved buffer switching
 (menu-bar-mode 0)
 (desktop-save-mode 1) ;; persistent sessions
-(undo-tree-mode 0)
-(global-undo-tree-mode 0)
+;(undo-tree-mode 0)
+;(global-undo-tree-mode 0)
 
 (setq scroll-step            1
       scroll-conservatively  10000)
@@ -143,3 +143,15 @@
 (setq wg-prefix-key (kbd "C-z"))
 (workgroups-mode 1)
 (wg-load "~/.emacs.d/workgroups")
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values (quote ((emacs-lisp-docstring-fill-column . 75)))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
