@@ -29,6 +29,7 @@
 ;; Requires
 (require 'git)
 (require 'crosshairs)
+(require 'wc-mode)
 (require 'cmake-mode)
 (require 'mingus)
 
@@ -41,8 +42,8 @@
 (iswitchb-mode 1) ;; improved buffer switching
 (menu-bar-mode 0)
 (desktop-save-mode 1) ;; persistent sessions
-(undo-tree-mode 0)
-(global-undo-tree-mode 0)
+;(undo-tree-mode 0)
+;(global-undo-tree-mode 0)
 
 (setq scroll-step            1
       scroll-conservatively  10000)
@@ -114,6 +115,8 @@
 
 (fset 'both-prev-page
    "\C-[v\C-xo\C-[v")
+
+(add-hook 'ruby-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
 
 (global-set-key (kbd "C-M-p") 'both-prev-page)
 (global-set-key (kbd "C-M-v") 'both-next-page)
