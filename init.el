@@ -49,6 +49,7 @@
 
 (subword-mode 1)
 (load-theme 'zenburn t)
+(setq-default indent-tabs-mode nil)
 
 (load "~/.emacs.d/elpa/python-mode-6.0.10/python-mode.el")
 
@@ -140,3 +141,15 @@
 (setq wg-prefix-key (kbd "C-z"))
 (workgroups-mode 1)
 (wg-load "~/.emacs.d/workgroups")
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values (quote ((emacs-lisp-docstring-fill-column . 75)))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
