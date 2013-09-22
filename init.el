@@ -9,7 +9,7 @@
 	     '("elpa" . "http://elpa.gnu.org/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex cmake-mode rinari python-mode zenburn-theme company auto-complete))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex cmake-mode rinari python-mode zenburn-theme company auto-complete eimp))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -32,6 +32,8 @@
 (require 'wc-mode)
 (require 'cmake-mode)
 (require 'mingus)
+(require 'column-marker)
+(require 'eimp)
 
 ;; General emacs settings
 
@@ -47,12 +49,17 @@
 
 (setq scroll-step            1
       scroll-conservatively  10000)
+(setq c-default-style "gnu"
+      c-basic-offset 2)
+(c-set-offset 'substatement-open 0)
 
 (subword-mode 1)
 (load-theme 'zenburn t)
-(setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil) ; Don't use tabs for indentation
 
 (load "~/.emacs.d/elpa/python-mode-6.0.10/python-mode.el")
+
+(add-to-list 'auto-mode-alist '("\.c0$" . c-mode))
 
 ;; Haskell mode
 (load "~/.emacs.d/plugins/haskell-mode/haskell-site-file")
