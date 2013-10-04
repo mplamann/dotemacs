@@ -40,6 +40,8 @@
 (require 'wc-mode)
 (require 'cmake-mode)
 (require 'mingus)
+(require 'column-marker)
+(require 'eimp)
 
 ;; General emacs settings
 
@@ -56,12 +58,17 @@
 
 (setq scroll-step            1
       scroll-conservatively  10000)
+(setq c-default-style "gnu"
+      c-basic-offset 2)
+(c-set-offset 'substatement-open 0)
 
 (subword-mode 1)
 (load-theme 'zenburn t)
-(setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil) ; Don't use tabs for indentation
 
 (load "~/.emacs.d/elpa/python-mode-6.0.10/python-mode.el")
+
+(add-to-list 'auto-mode-alist '("\.c0$" . c-mode))
 
 ;; Haskell mode
 (load "~/.emacs.d/plugins/haskell-mode/haskell-site-file")
