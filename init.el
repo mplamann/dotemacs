@@ -9,7 +9,7 @@
 	     '("elpa" . "http://elpa.gnu.org/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex cmake-mode rinari python-mode zenburn-theme company auto-complete))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex cmake-mode rinari python-mode zenburn-theme company auto-complete eimp))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -23,6 +23,14 @@
   (dolist (p prelude-packages)
     (when (not (package-installed-p p))
       (package-install p))))
+
+(defun string/ends-with (s ending)
+  "return non-nil if string S ends with ENDING."
+  (let ((elength (length ending)))
+    (string= (substring s (- 0 elength)) ending)))
+
+(when (string/ends-with system-name "andrew.cmu.edu")
+  (load-file "~/.emacs.d/c0.el"))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
@@ -38,6 +46,7 @@
 (setq inhibit-startup-message t)
 (setq make-backup-files nil)
 (setq large-file-warning-threshold 200000000) ; Warn for files > 200 MB
+(setq doc-view-continuous t)
 
 (iswitchb-mode 1) ;; improved buffer switching
 (menu-bar-mode 0)
