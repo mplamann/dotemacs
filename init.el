@@ -9,7 +9,7 @@
 	     '("elpa" . "http://elpa.gnu.org/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex cmake-mode rinari python-mode zenburn-theme company auto-complete eimp))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex cmake-mode rinari python-mode zenburn-theme company auto-complete eimp web-mode ruby-mode))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -32,7 +32,6 @@
 (require 'wc-mode)
 (require 'cmake-mode)
 (require 'mingus)
-(require 'column-marker)
 (require 'eimp)
 
 ;; General emacs settings
@@ -66,6 +65,16 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
+;; Web development
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
 ;; SICP Support (Racket)
 (load-file "~/.emacs.d/lisp/geiser/elisp/geiser.el")
 (require 'quack)
@@ -98,6 +107,8 @@
 
 ;; Keyboard shortcuts
 (global-set-key (kbd "RET") 'newline-and-indent)
+(add-hook 'LaTeX-mode-hook
+          (lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
 (add-hook 'ruby-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
 (add-hook 'feature-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
 (global-set-key (kbd "C-h") 'delete-backward-char)
