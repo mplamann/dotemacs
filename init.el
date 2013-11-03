@@ -9,7 +9,7 @@
 	     '("elpa" . "http://elpa.gnu.org/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex cmake-mode rinari python-mode zenburn-theme company auto-complete eimp web-mode ruby-mode))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex cmake-mode rinari python-mode zenburn-theme company auto-complete eimp web-mode ruby-mode autopair))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -24,6 +24,14 @@
     (when (not (package-installed-p p))
       (package-install p))))
 
+(defun string/ends-with (s ending)
+  "return non-nil if string S ends with ENDING."
+  (let ((elength (length ending)))
+    (string= (substring s (- 0 elength)) ending)))
+
+(when (string/ends-with system-name "andrew.cmu.edu")
+  (load-file "~/.emacs.d/c0.el"))
+
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
 ;; Requires
@@ -32,6 +40,7 @@
 (require 'wc-mode)
 (require 'cmake-mode)
 (require 'mingus)
+;(require 'column-marker)
 (require 'eimp)
 
 ;; General emacs settings
@@ -39,10 +48,11 @@
 (setq inhibit-startup-message t)
 (setq make-backup-files nil)
 (setq large-file-warning-threshold 200000000) ; Warn for files > 200 MB
+(setq doc-view-continuous t)
 
 (iswitchb-mode 1) ;; improved buffer switching
 (menu-bar-mode 0)
-(desktop-save-mode 1) ;; persistent sessions
+;; (desktop-save-mode 1) ;; persistent sessions
 ;(undo-tree-mode 0)
 ;(global-undo-tree-mode 0)
 
@@ -59,6 +69,8 @@
 (load "~/.emacs.d/elpa/python-mode-6.0.10/python-mode.el")
 
 (add-to-list 'auto-mode-alist '("\.c0$" . c-mode))
+(add-to-list 'auto-mode-alist '("\.ino$" . c-mode))
+(autopair-global-mode)
 
 ;; Haskell mode
 (load "~/.emacs.d/plugins/haskell-mode/haskell-site-file")
