@@ -40,11 +40,8 @@
 (require 'wc-mode)
 (require 'cmake-mode)
 (require 'mingus)
-<<<<<<< HEAD
-=======
 ;(require 'column-marker)
 (require 'eimp)
->>>>>>> 84c9974485418b5c7305a7fcd46f6d398377e4fa
 
 ;; General emacs settings
 

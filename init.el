@@ -41,7 +41,6 @@
 (require 'cmake-mode)
 (require 'mingus)
 ;(require 'column-marker)
-(require 'eimp)
 
 ;; General emacs settings
 
