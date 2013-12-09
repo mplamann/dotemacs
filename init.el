@@ -40,7 +40,6 @@
 (require 'wc-mode)
 (require 'cmake-mode)
 (require 'mingus)
-;(require 'column-marker)
 (require 'eimp)
 (require 'yasnippet-bundle)
 
