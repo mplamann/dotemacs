@@ -51,7 +51,7 @@
 
 (iswitchb-mode 1) ;; improved buffer switching
 (menu-bar-mode 0)
-;; (desktop-save-mode 1) ;; persistent sessions
+(desktop-save-mode 1) ;; persistent sessions
 ;(undo-tree-mode 0)
 ;(global-undo-tree-mode 0)
 
