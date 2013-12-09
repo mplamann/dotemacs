@@ -40,7 +40,6 @@
 (require 'wc-mode)
 (require 'cmake-mode)
 (require 'mingus)
-(require 'eimp)
 (require 'yasnippet-bundle)
 
 ;; General emacs settings
