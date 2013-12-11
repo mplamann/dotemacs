@@ -9,7 +9,7 @@
 	     '("elpa" . "http://elpa.gnu.org/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex cmake-mode rinari python-mode zenburn-theme company auto-complete eimp web-mode ruby-mode autopair yasnippet-bundle))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex cmake-mode rinari python-mode zenburn-theme company auto-complete eimp web-mode ruby-mode autopair yasnippet-bundle magit))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -41,6 +41,7 @@
 (require 'cmake-mode)
 (require 'mingus)
 (require 'yasnippet-bundle)
+(require 'magit)
 
 ;; General emacs settings
 
@@ -75,19 +76,18 @@
 (load "~/.emacs.d/plugins/haskell-mode/haskell-site-file")
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-(add-hook 'haskell-mode-hook (lambda () (paredit-mode +1)))
 
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
 (require 'haskell-ac) ;; Improved autocompletion for Haskell
 
-(add-hook 'haskell-mode-hook (setq ac-sources
-                                   (append '(ac-source-yasnippet
-                                             ac-source-abbrev
-                                             ac-source-words-in-buffer
-                                             my/ac-source-haskell)
-                                           ac-sources)))
+(add-hook 'haskell-mode-hook (lambda () (setq ac-sources
+                                               (append '(ac-source-yasnippet
+                                                         ac-source-abbrev
+                                                         ac-source-words-in-buffer
+                                                         my/ac-source-haskell)
+                                                       ac-sources))))
 
 (add-to-list 'completion-ignored-extensions ".hi")
 
