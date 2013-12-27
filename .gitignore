@@ -1,3 +1,5 @@
 auto-save-list
 elpa
 session.*
+.emacs.desktop*
+ac-comphist.dat

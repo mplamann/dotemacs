@@ -9,7 +9,7 @@
 	     '("elpa" . "http://elpa.gnu.org/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex cmake-mode rinari python-mode zenburn-theme company auto-complete eimp web-mode ruby-mode autopair yasnippet-bundle magit))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex cmake-mode rinari python-mode zenburn-theme company auto-complete eimp web-mode ruby-mode autopair yasnippet-bundle magit android-mode))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -45,7 +45,8 @@
 
 ;; General emacs settings
 
-(setq inhibit-startup-message t)
+(setq inhibit-startup-message t
+      inhibit-startup-echo-area-message t)
 (setq make-backup-files nil)
 (setq large-file-warning-threshold 200000000) ; Warn for files > 200 MB
 (setq doc-view-continuous t)
@@ -53,6 +54,7 @@
 (iswitchb-mode 1) ;; improved buffer switching
 (menu-bar-mode 0)
 (desktop-save-mode 1) ;; persistent sessions
+(tool-bar-mode 0)
 ;(undo-tree-mode 0)
 ;(global-undo-tree-mode 0)
 
@@ -71,6 +73,11 @@
 (add-to-list 'auto-mode-alist '("\.c0$" . c-mode))
 (add-to-list 'auto-mode-alist '("\.ino$" . c-mode))
 (autopair-global-mode)
+
+(fset 'yes-or-no-p 'y-or-n-p)
+(setq kill-buffer-query-functions
+      (remq 'process-kill-buffer-query-function
+            kill-buffer-query-functions))
 
 ;; Haskell mode
 (load "~/.emacs.d/plugins/haskell-mode/haskell-site-file")
@@ -152,6 +159,7 @@
 (global-set-key (kbd "C-c l") 'hl-line-mode)
 (global-set-key (kbd "C-x C-b") 'iswitchb-buffer)
 (global-set-key (kbd "<C-return>") 'dabbrev-expand)
+(global-set-key (kbd "C-c s") 'eshell)
 
 (global-set-key (kbd "C-c b")  'windmove-left)
 (global-set-key (kbd "C-c f") 'windmove-right)
@@ -185,11 +193,6 @@
 	(explicit-bash-args '("--login" "-i")))
     (call-interactively 'shell)))
 
-;; Workgroups
-(require 'workgroups)
-(setq wg-prefix-key (kbd "C-z"))
-(workgroups-mode 1)
-(wg-load "~/.emacs.d/workgroups")
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -202,3 +205,15 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+;; Java / Android
+;; Because Eclipse is painful to use as compared to Emacs
+
+(require 'android-mode)
+(setq android-mode-sdk-dir "~/android-sdk/sdk")
+(add-hook 'gud-mode-hook
+          (lambda ()
+            (add-to-list 'gud-jdb-classpath "/home/mitchell/android-sdk/sdk/platforms/android-19/android.jar")
+            ))
+(add-to-list 'load-path "~/.emacs.d/jdee-2.4.1/lisp")
+(load "jde")
