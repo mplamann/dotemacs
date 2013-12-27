@@ -77,18 +77,6 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-(ac-config-default)
-(require 'haskell-ac) ;; Improved autocompletion for Haskell
-
-(add-hook 'haskell-mode-hook (lambda () (setq ac-sources
-                                               (append '(ac-source-yasnippet
-                                                         ac-source-abbrev
-                                                         ac-source-words-in-buffer
-                                                         my/ac-source-haskell)
-                                                       ac-sources))))
-
 (add-to-list 'completion-ignored-extensions ".hi")
 
 ;; Web development
