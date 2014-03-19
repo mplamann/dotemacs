@@ -33,6 +33,7 @@
   (load-file "~/.emacs.d/c0.el"))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+(add-to-list 'load-path "~/.emacs.d/")
 
 ;; Requires
 (require 'git)
@@ -42,6 +43,7 @@
 (require 'mingus)
 (require 'yasnippet-bundle)
 (require 'magit)
+(require 'cmu-sml)
 
 ;; General emacs settings
 
@@ -72,7 +74,7 @@
 
 (add-to-list 'auto-mode-alist '("\.c0$" . c-mode))
 (add-to-list 'auto-mode-alist '("\.ino$" . c-mode))
-(autopair-global-mode)
+;(autopair-global-mode)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq kill-buffer-query-functions
@@ -209,11 +211,17 @@
 ;; Java / Android
 ;; Because Eclipse is painful to use as compared to Emacs
 
-(require 'android-mode)
-(setq android-mode-sdk-dir "~/android-sdk/sdk")
-(add-hook 'gud-mode-hook
-          (lambda ()
-            (add-to-list 'gud-jdb-classpath "/home/mitchell/android-sdk/sdk/platforms/android-19/android.jar")
-            ))
-(add-to-list 'load-path "~/.emacs.d/jdee-2.4.1/lisp")
-(load "jde")
+;; (require 'android-mode)
+;; (setq android-mode-sdk-dir "~/android-sdk/sdk")
+;; (add-hook 'gud-mode-hook
+;;           (lambda ()
+;;             (add-to-list 'gud-jdb-classpath "/home/mitchell/android-sdk/sdk/platforms/android-19/android.jar")
+;;             ))
+;; (add-to-list 'load-path "~/.emacs.d/jdee-2.4.1/lisp")
+;; (load "jde")
+
+(fset 'latex-code
+   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([92 99 111 100 101 123 125 left] 0 "%d")) arg)))
+
+(add-hook 'latex-mode (lambda ()
+                        (local-set-key "C-c i" 'latex-code)))
