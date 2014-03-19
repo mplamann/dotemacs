@@ -9,7 +9,7 @@
 	     '("elpa" . "http://elpa.gnu.org/packages/") t)
 (package-initialize)
 (defvar prelude-packages
-  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex cmake-mode rinari python-mode zenburn-theme company auto-complete eimp web-mode ruby-mode autopair yasnippet-bundle magit android-mode))
+  '(haskell-mode python quack paredit workgroups crosshairs hl-line+ col-highlight slime auctex cmake-mode rinari python-mode zenburn-theme company auto-complete eimp web-mode ruby-mode yasnippet-bundle magit android-mode elscreen))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -35,13 +35,13 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
 ;; Requires
-(require 'git)
+;(require 'git)
 (require 'crosshairs)
 (require 'wc-mode)
 (require 'cmake-mode)
 (require 'mingus)
 (require 'yasnippet-bundle)
-(require 'magit)
+;(require 'magit)
 
 ;; General emacs settings
 
@@ -53,7 +53,7 @@
 
 (iswitchb-mode 1) ;; improved buffer switching
 (menu-bar-mode 0)
-(desktop-save-mode 1) ;; persistent sessions
+;(desktop-save-mode 1) ;; persistent sessions
 (tool-bar-mode 0)
 ;(undo-tree-mode 0)
 ;(global-undo-tree-mode 0)
@@ -68,11 +68,10 @@
 (load-theme 'zenburn t)
 (setq-default indent-tabs-mode nil) ; Don't use tabs for indentation
 
-(load "~/.emacs.d/elpa/python-mode-6.0.10/python-mode.el")
+;(load "~/.emacs.d/elpa/python-mode-6.0.10/python-mode.el")
 
 (add-to-list 'auto-mode-alist '("\.c0$" . c-mode))
 (add-to-list 'auto-mode-alist '("\.ino$" . c-mode))
-(autopair-global-mode)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq kill-buffer-query-functions
@@ -149,6 +148,11 @@
 (global-set-key (kbd "<C-return>") 'dabbrev-expand)
 (global-set-key (kbd "C-c s") 'eshell)
 
+;; I've messed up C-x o enough times.
+(global-set-key (kbd "C-c o") 'other-window)
+(global-set-key (kbd "C-x C-o") 'other-window)
+(global-set-key (kbd "C-c C-o") 'other-window)
+
 (global-set-key (kbd "C-c b")  'windmove-left)
 (global-set-key (kbd "C-c f") 'windmove-right)
 (global-set-key (kbd "C-c p")    'windmove-up)
@@ -196,12 +200,3 @@
 
 ;; Java / Android
 ;; Because Eclipse is painful to use as compared to Emacs
-
-(require 'android-mode)
-(setq android-mode-sdk-dir "~/android-sdk/sdk")
-(add-hook 'gud-mode-hook
-          (lambda ()
-            (add-to-list 'gud-jdb-classpath "/home/mitchell/android-sdk/sdk/platforms/android-19/android.jar")
-            ))
-(add-to-list 'load-path "~/.emacs.d/jdee-2.4.1/lisp")
-(load "jde")
