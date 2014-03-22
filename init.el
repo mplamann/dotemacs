@@ -25,7 +25,8 @@
     web-mode
     ruby-mode
     yasnippet-bundle
-    elscreen))
+    elscreen
+    projectile))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -46,6 +47,7 @@
 (require 'git)
 (require 'wc-mode)
 (require 'yasnippet-bundle)
+(require 'toggle-case)
 
 ;; General emacs settings
 
@@ -69,6 +71,8 @@
 
 (setq scroll-step            1
       scroll-conservatively  10000)
+
+(projectile-global-mode)
 
 ;; Best theme I've found so far
 (load-theme 'zenburn t)
@@ -106,6 +110,7 @@
 (global-set-key (kbd "C-x C-b") 'iswitchb-buffer)
 (global-set-key (kbd "<C-return>") 'dabbrev-expand)
 (global-set-key (kbd "C-c s") 'eshell)
+(global-set-key (kbd "C-.") 'toggle-case)
 
 ;; I've messed up C-x o enough times.
 (global-set-key (kbd "C-c o") 'other-window)
