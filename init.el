@@ -26,7 +26,8 @@
     ruby-mode
     yasnippet-bundle
     elscreen
-    projectile))
+    projectile
+    cygwin-mount))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -91,39 +92,73 @@
 (add-to-list 'auto-mode-alist '("\\.qml\\'" . javascript-mode))
 
 ;; Keyboard shortcuts
+
+(defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
+
+(define-key my-keys-minor-mode-map (kbd "C-h") 'delete-backward-char)
+(define-key my-keys-minor-mode-map (kbd "M-h") 'backward-kill-word)
+(define-key my-keys-minor-mode-map (kbd "C-c c") 'compile)
+(define-key my-keys-minor-mode-map (kbd "C-x h") 'help-command)
+(define-key my-keys-minor-mode-map (kbd "C-x C-m") 'execute-extended-command)
+(define-key my-keys-minor-mode-map (kbd "C-c C-m") 'execute-extended-command)
+(define-key my-keys-minor-mode-map (kbd "C-c o") 'ff-find-other-file)
+(define-key my-keys-minor-mode-map (kbd "C-c r") 'revert-buffer)
+(define-key my-keys-minor-mode-map (kbd "C-c l") 'hl-line-mode)
+(define-key my-keys-minor-mode-map (kbd "C-x C-b") 'iswitchb-buffer)
+(define-key my-keys-minor-mode-map (kbd "<C-return>") 'dabbrev-expand)
+(define-key my-keys-minor-mode-map (kbd "C-.") 'toggle-case)
+
+(define-key my-keys-minor-mode-map (kbd "C-c o") 'other-window)
+(define-key my-keys-minor-mode-map (kbd "C-x C-o") 'other-window)
+(define-key my-keys-minor-mode-map (kbd "C-c C-o") 'other-window)
+
+(define-minor-mode my-keys-minor-mode
+  "A minor mode so that my key settings override annoying major modes."
+  t " my-keys" 'my-keys-minor-mode-map)
+
+(defadvice load (after give-my-keybindings-priority)
+  "Try to ensure that my keybindings always have priority."
+  (if (not (eq (car (car minor-mode-map-alist)) 'my-keys-minor-mode))
+      (let ((mykeys (assq 'my-keys-minor-mode minor-mode-map-alist)))
+        (assq-delete-all 'my-keys-minor-mode minor-mode-map-alist)
+        (add-to-list 'minor-mode-map-alist mykeys))))
+(ad-activate 'load)
+
+(my-keys-minor-mode 1)
+
 (global-set-key (kbd "RET") 'newline-and-indent)
 (add-hook 'LaTeX-mode-hook
           (lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
 (add-hook 'ruby-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
 (add-hook 'feature-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
-(global-set-key (kbd "C-h") 'delete-backward-char)
-(global-set-key (kbd "M-h") 'backward-kill-word)
-(global-set-key (kbd "C-c c") 'compile)
-(global-set-key (kbd "C-x h") 'help-command)
-(global-set-key (kbd "C-x C-m") 'execute-extended-command)
-(global-set-key (kbd "C-c C-m") 'execute-extended-command)
-(global-set-key (kbd "C-c o") 'ff-find-other-file)
-(global-set-key (kbd "C-c g") 'gdb-many-windows)
-(global-set-key (kbd "C-c r") 'revert-buffer)
-(global-set-key (kbd "C-x C-u") 'undo)
-(global-set-key (kbd "C-c l") 'hl-line-mode)
-(global-set-key (kbd "C-x C-b") 'iswitchb-buffer)
-(global-set-key (kbd "<C-return>") 'dabbrev-expand)
-(global-set-key (kbd "C-c s") 'eshell)
-(global-set-key (kbd "C-.") 'toggle-case)
+;; (global-set-key (kbd "C-h") 'delete-backward-char)
+;; (global-set-key (kbd "M-h") 'backward-kill-word)
+;; (global-set-key (kbd "C-c c") 'compile)
+;; (global-set-key (kbd "C-x h") 'help-command)
+;; (global-set-key (kbd "C-x C-m") 'execute-extended-command)
+;; (global-set-key (kbd "C-c C-m") 'execute-extended-command)
+;; (global-set-key (kbd "C-c o") 'ff-find-other-file)
+;; (global-set-key (kbd "C-c g") 'gdb-many-windows)
+;; (global-set-key (kbd "C-c r") 'revert-buffer)
+;; (global-set-key (kbd "C-x C-u") 'undo)
+;; (global-set-key (kbd "C-c l") 'hl-line-mode)
+;; (global-set-key (kbd "C-x C-b") 'iswitchb-buffer)
+;; (global-set-key (kbd "<C-return>") 'dabbrev-expand)
+;; (global-set-key (kbd "C-c s") 'eshell)
+;; (global-set-key (kbd "C-.") 'toggle-case)
 
 ;; I've messed up C-x o enough times.
-(global-set-key (kbd "C-c o") 'other-window)
-(global-set-key (kbd "C-x C-o") 'other-window)
-(global-set-key (kbd "C-c C-o") 'other-window)
+;; (global-set-key (kbd "C-c o") 'other-window)
+;; (global-set-key (kbd "C-x C-o") 'other-window)
+;; (global-set-key (kbd "C-c C-o") 'other-window)
 
-(global-set-key (kbd "C-c b")  'windmove-left)
-(global-set-key (kbd "C-c f") 'windmove-right)
-(global-set-key (kbd "C-c p")    'windmove-up)
-(global-set-key (kbd "C-c n")  'windmove-down)
-(setq windmove-wrap-around t)
+;; (global-set-key (kbd "C-c b")  'windmove-left)
+;; (global-set-key (kbd "C-c f") 'windmove-right)
+;; (global-set-key (kbd "C-c p")    'windmove-up)
+;; (global-set-key (kbd "C-c n")  'windmove-down)
+;; (setq windmove-wrap-around t)
 
-(add-hook 'ruby-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
+;; (add-hook 'ruby-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
 
 ;; Mac Compatibility (Terminal is a pain)
 (global-set-key (kbd "M-[ 5 d") 'backward-word)
@@ -132,4 +167,32 @@
 	  (lambda ()
 	    (local-set-key (kbd "M-[ 5 d") 'paredit-forward-barf-sexp)
 	    (local-set-key (kbd "M-[ 5 c") 'paredit-forward-slurp-sexp)))
+
+;; Windows stuff
+(defun android-start ()
+  (interactive)
+  (when (eq system-type 'windows-nt)
+    (require 'cygwin-mount)
+    (setq cygwin-mount-cygwin-bin-directory "C:/cygwin64/bin")
+    (cygwin-mount-activate)
+    (add-hook 'comint-output-filter-functions
+              'shell-strip-ctrl-m nil t)
+    (add-hook 'comint-output-filter-functions
+              'comint-watch-for-password-prompt nil t)
+    (setq explicit-shell-file-name "C:/cygwin64/bin/bash.exe")
+    (setq shell-file-name explicit-shell-file-name))
+
+  (when (eq system-type 'windows-nt)
+    (progn (setq android-ndk-root-path "C:/Users/mitchell/AppData/Local/Android/android-ndk-r9d")
+           (setq android-sdk-root-path "C:/Users/mitchell/AppData/Local/Android/android-sdk"))
+    (add-to-list 'load-path "C:/Users/mitchell/AppData/Local/Android/android-emacs-toolkit")
+    (require 'androidmk-mode)
+    (add-hook 'androidmk-mode-hook
+              (lambda ()
+                (progn (local-set-key [M-f5] 'androidndk-build)
+                       (local-set-key [M-S-f5] 'androidndk-rebuild)
+                       (local-set-key [C-f5] 'androidsdk-build)
+                       (local-set-key [C-S-f5] 'androidsdk-rebuild)))))
+  (setq android-default-package "com.infreefall"))
+
 
