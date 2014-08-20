@@ -26,7 +26,8 @@
     ruby-mode
     yasnippet-bundle
     elscreen
-    projectile))
+    projectile
+    idris-mode))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -68,11 +69,19 @@
 ;(desktop-save-mode 1) ;; persistent sessions
 (tool-bar-mode 0)
 (scroll-bar-mode -1)
+(column-number-mode 1)
 
 (setq scroll-step            1
       scroll-conservatively  10000)
 
 (projectile-global-mode)
+
+;; Just helpful
+(defun sudo-find-file (file-name)
+  "Like find file, but opens the file as root."
+  (interactive "FSudo Find File: ")
+  (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
+    (find-file tramp-file-name)))
 
 ;; Best theme I've found so far
 (load-theme 'zenburn t)
@@ -85,7 +94,8 @@
                         "haskell"
                         "web"
                         "lisp"
-                        "latex")
+                        "latex"
+                        "idris")
       do (load-config-file language))
 
 (add-to-list 'auto-mode-alist '("\\.qml\\'" . javascript-mode))
@@ -133,3 +143,15 @@
 	    (local-set-key (kbd "M-[ 5 d") 'paredit-forward-barf-sexp)
 	    (local-set-key (kbd "M-[ 5 c") 'paredit-forward-slurp-sexp)))
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(quack-programs (quote ("mzscheme" "bigloo" "csi" "csi -hygienic" "gosh" "gracket" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "racket" "racket -il typed/racket" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi"))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
