@@ -27,7 +27,11 @@
     yasnippet-bundle
     elscreen
     projectile
-    idris-mode))
+    idris-mode
+    rust-mode
+    evil
+    evil-numbers
+    ))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -70,6 +74,7 @@
 (tool-bar-mode 0)
 (scroll-bar-mode -1)
 (column-number-mode 1)
+(global-undo-tree-mode)
 
 (setq scroll-step            1
       scroll-conservatively  10000)
@@ -91,11 +96,12 @@
 
 (loop for language in '("c" 
                         "python"
-                        "haskell"
+                        "haskell-lang-specific"
                         "web"
                         "lisp"
                         "latex"
-                        "idris")
+                        "idris"
+                        "java")
       do (load-config-file language))
 
 (add-to-list 'auto-mode-alist '("\\.qml\\'" . javascript-mode))
@@ -116,10 +122,16 @@
 (define-key my-keys-minor-mode-map (kbd "C-x C-b") 'iswitchb-buffer)
 (define-key my-keys-minor-mode-map (kbd "<C-return>") 'dabbrev-expand)
 (define-key my-keys-minor-mode-map (kbd "C-.") 'toggle-case)
+(define-key my-keys-minor-mode-map (kbd "C-+") 'evil-numbers/inc-at-pt)
+(define-key my-keys-minor-mode-map (kbd "<C-kp-add>") 'evil-numbers/inc-at-pt)
+(define-key my-keys-minor-mode-map (kbd "C--") 'evil-numbers/dec-at-pt)
+(define-key my-keys-minor-mode-map (kbd "<C-kp-subtract>") 'evil-numbers/dec-at-pt)
 
 (define-key my-keys-minor-mode-map (kbd "C-c o") 'other-window)
 (define-key my-keys-minor-mode-map (kbd "C-x C-o") 'other-window)
 (define-key my-keys-minor-mode-map (kbd "C-c C-o") 'other-window)
+(define-key my-keys-minor-mode-map (kbd "M-P") 'scroll-down-line)
+(define-key my-keys-minor-mode-map (kbd "M-N") 'scroll-up-line)
 
 (define-minor-mode my-keys-minor-mode
   "A minor mode so that my key settings override annoying major modes."
@@ -140,34 +152,6 @@
           (lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
 (add-hook 'ruby-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
 (add-hook 'feature-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
-;; (global-set-key (kbd "C-h") 'delete-backward-char)
-;; (global-set-key (kbd "M-h") 'backward-kill-word)
-;; (global-set-key (kbd "C-c c") 'compile)
-;; (global-set-key (kbd "C-x h") 'help-command)
-;; (global-set-key (kbd "C-x C-m") 'execute-extended-command)
-;; (global-set-key (kbd "C-c C-m") 'execute-extended-command)
-;; (global-set-key (kbd "C-c o") 'ff-find-other-file)
-;; (global-set-key (kbd "C-c g") 'gdb-many-windows)
-;; (global-set-key (kbd "C-c r") 'revert-buffer)
-;; (global-set-key (kbd "C-x C-u") 'undo)
-;; (global-set-key (kbd "C-c l") 'hl-line-mode)
-;; (global-set-key (kbd "C-x C-b") 'iswitchb-buffer)
-;; (global-set-key (kbd "<C-return>") 'dabbrev-expand)
-;; (global-set-key (kbd "C-c s") 'eshell)
-;; (global-set-key (kbd "C-.") 'toggle-case)
-
-;; I've messed up C-x o enough times.
-;; (global-set-key (kbd "C-c o") 'other-window)
-;; (global-set-key (kbd "C-x C-o") 'other-window)
-;; (global-set-key (kbd "C-c C-o") 'other-window)
-
-;; (global-set-key (kbd "C-c b")  'windmove-left)
-;; (global-set-key (kbd "C-c f") 'windmove-right)
-;; (global-set-key (kbd "C-c p")    'windmove-up)
-;; (global-set-key (kbd "C-c n")  'windmove-down)
-;; (setq windmove-wrap-around t)
-
-;; (add-hook 'ruby-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
 
 ;; Mac Compatibility (Terminal is a pain)
 (global-set-key (kbd "M-[ 5 d") 'backward-word)
