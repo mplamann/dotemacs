@@ -31,6 +31,9 @@
     rust-mode
     evil
     evil-numbers
+    evil-matchit
+    evil-surround
+    key-chord
     ))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
@@ -75,6 +78,9 @@
 (scroll-bar-mode -1)
 (column-number-mode 1)
 (global-undo-tree-mode)
+;; (evil-mode 1)
+;; (global-evil-matchit-mode 1)
+;; ( key-chord-mode 1)
 
 (setq scroll-step            1
       scroll-conservatively  10000)
@@ -132,6 +138,13 @@
 (define-key my-keys-minor-mode-map (kbd "C-c C-o") 'other-window)
 (define-key my-keys-minor-mode-map (kbd "M-P") 'scroll-down-line)
 (define-key my-keys-minor-mode-map (kbd "M-N") 'scroll-up-line)
+
+;; (key-chord-define evil-insert-state-map "kj" 'evil-normal-state)
+;; (define-key evil-insert-state-map "\C-y" nil)
+;; (define-key evil-insert-state-map "\C-n" nil)
+;; (define-key evil-insert-state-map "\C-e" nil)
+;; (define-key evil-insert-state-map (kbd "C-e") nil)
+;; (define-key evil-insert-state-map "\C-p" nil)
 
 (define-minor-mode my-keys-minor-mode
   "A minor mode so that my key settings override annoying major modes."
