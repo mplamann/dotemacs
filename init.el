@@ -27,7 +27,8 @@
     yasnippet-bundle
     elscreen
     projectile
-    cygwin-mount))
+    cygwin-mount
+    smex))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -69,6 +70,7 @@
 ;(desktop-save-mode 1) ;; persistent sessions
 (tool-bar-mode 0)
 (scroll-bar-mode -1)
+(smex-initialize)
 
 (setq scroll-step            1
       scroll-conservatively  10000)
@@ -108,6 +110,9 @@
 (define-key my-keys-minor-mode-map (kbd "<C-return>") 'dabbrev-expand)
 (define-key my-keys-minor-mode-map (kbd "C-.") 'toggle-case)
 
+(define-key my-keys-minor-mode-map (kbd "M-x") 'smex)
+(define-key my-keys-minor-mode-map (kbd "M-X") 'smex-major-mode-commands)
+
 (define-key my-keys-minor-mode-map (kbd "C-c o") 'other-window)
 (define-key my-keys-minor-mode-map (kbd "C-x C-o") 'other-window)
 (define-key my-keys-minor-mode-map (kbd "C-c C-o") 'other-window)
@@ -131,34 +136,6 @@
           (lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
 (add-hook 'ruby-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
 (add-hook 'feature-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
-;; (global-set-key (kbd "C-h") 'delete-backward-char)
-;; (global-set-key (kbd "M-h") 'backward-kill-word)
-;; (global-set-key (kbd "C-c c") 'compile)
-;; (global-set-key (kbd "C-x h") 'help-command)
-;; (global-set-key (kbd "C-x C-m") 'execute-extended-command)
-;; (global-set-key (kbd "C-c C-m") 'execute-extended-command)
-;; (global-set-key (kbd "C-c o") 'ff-find-other-file)
-;; (global-set-key (kbd "C-c g") 'gdb-many-windows)
-;; (global-set-key (kbd "C-c r") 'revert-buffer)
-;; (global-set-key (kbd "C-x C-u") 'undo)
-;; (global-set-key (kbd "C-c l") 'hl-line-mode)
-;; (global-set-key (kbd "C-x C-b") 'iswitchb-buffer)
-;; (global-set-key (kbd "<C-return>") 'dabbrev-expand)
-;; (global-set-key (kbd "C-c s") 'eshell)
-;; (global-set-key (kbd "C-.") 'toggle-case)
-
-;; I've messed up C-x o enough times.
-;; (global-set-key (kbd "C-c o") 'other-window)
-;; (global-set-key (kbd "C-x C-o") 'other-window)
-;; (global-set-key (kbd "C-c C-o") 'other-window)
-
-;; (global-set-key (kbd "C-c b")  'windmove-left)
-;; (global-set-key (kbd "C-c f") 'windmove-right)
-;; (global-set-key (kbd "C-c p")    'windmove-up)
-;; (global-set-key (kbd "C-c n")  'windmove-down)
-;; (setq windmove-wrap-around t)
-
-;; (add-hook 'ruby-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
 
 ;; Mac Compatibility (Terminal is a pain)
 (global-set-key (kbd "M-[ 5 d") 'backward-word)
@@ -196,3 +173,6 @@
   (setq android-default-package "com.infreefall"))
 
 
+(require 'guide-key)
+(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c p" "C-x h"))
+(guide-key-mode 1)
