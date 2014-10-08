@@ -57,11 +57,8 @@
 (require 'git)
 (require 'wc-mode)
 (require 'yasnippet-bundle)
-<<<<<<< HEAD
 (require 'cmu-sml)
-=======
 (require 'toggle-case)
->>>>>>> 5b2d4eaff95a3594afbb5689ce705324e70a0d70
 
 ;; General emacs settings
 
@@ -107,7 +104,7 @@
 (defun load-config-file (file)
   (load-file (concat "~/.emacs.d/language-specific/" file ".el")))
 
-(loop for language in '("c" 
+(loop for language in '("c"
                         "python"
                         "haskell-lang-specific"
                         "web"
@@ -207,4 +204,3 @@
                        (local-set-key [C-f5] 'androidsdk-build)
                        (local-set-key [C-S-f5] 'androidsdk-rebuild)))))
   (setq android-default-package "com.infreefall"))
-
