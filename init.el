@@ -34,6 +34,7 @@
     evil-matchit
     evil-surround
     key-chord
+    dtrt-indent
     ))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
@@ -78,6 +79,7 @@
 (scroll-bar-mode -1)
 (column-number-mode 1)
 (global-undo-tree-mode)
+(dtrt-indent-mode 1)
 ;; (evil-mode 1)
 ;; (global-evil-matchit-mode 1)
 ;; ( key-chord-mode 1)
