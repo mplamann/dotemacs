@@ -1,4 +1,4 @@
-;; -*- emacs-lisp -*- <14/03/18 22:18:23 /home/mitchell/.emacs.d/tramp>
+;; -*- emacs-lisp -*- <14/09/10 21:21:50 /home/mitchell/.emacs.d/tramp>
 ;; Tramp connection history.  Don't change this file.
 ;; You can delete it, forcing Tramp to reapply the checks.
 
@@ -47,8 +47,8 @@
    ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
   ("remote-shell" "/bin/sh")
   ("busybox" nil)
-  ("file-exists" "test -e")
   ("~" "/afs/andrew.cmu.edu/usr9/mplamann")
+  ("file-exists" "test -e")
   ("ls" "/bin/ls --color=never")
   ("ls-dired" t)
   ("stat" "\\stat")
@@ -58,4 +58,20 @@
   ("perl-file-spec" t)
   ("perl-cwd-realpath" t)
   ("perl" "\\perl5")
-  ("uid-integer" 2607024)))
+  ("uid-integer" 2607024))
+ (["sudo" "root" "mitchell-laptop-arch" nil nil]
+  ("uname" "Linux 3.16.1-1-ARCH")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("busybox" nil)
+  ("stat" "\\stat")
+  ("file-exists" "test -e")
+  ("id" "/bin/id")
+  ("gid-integer" 0)
+  ("readlink" "\\readlink")
+  ("uid-integer" 0)
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")))

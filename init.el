@@ -25,7 +25,17 @@
     web-mode
     ruby-mode
     yasnippet-bundle
-    elscreen))
+    elscreen
+    projectile
+    idris-mode
+    rust-mode
+    evil
+    evil-numbers
+    evil-matchit
+    evil-surround
+    key-chord
+    dtrt-indent
+    ))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -47,7 +57,11 @@
 (require 'git)
 (require 'wc-mode)
 (require 'yasnippet-bundle)
+<<<<<<< HEAD
 (require 'cmu-sml)
+=======
+(require 'toggle-case)
+>>>>>>> 5b2d4eaff95a3594afbb5689ce705324e70a0d70
 
 ;; General emacs settings
 
@@ -68,9 +82,24 @@
 ;(desktop-save-mode 1) ;; persistent sessions
 (tool-bar-mode 0)
 (scroll-bar-mode -1)
+(column-number-mode 1)
+(global-undo-tree-mode)
+(dtrt-indent-mode 1)
+;; (evil-mode 1)
+;; (global-evil-matchit-mode 1)
+;; ( key-chord-mode 1)
 
 (setq scroll-step            1
       scroll-conservatively  10000)
+
+(projectile-global-mode)
+
+;; Just helpful
+(defun sudo-find-file (file-name)
+  "Like find file, but opens the file as root."
+  (interactive "FSudo Find File: ")
+  (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
+    (find-file tramp-file-name)))
 
 ;; Best theme I've found so far
 (load-theme 'zenburn t)
@@ -80,47 +109,69 @@
 
 (loop for language in '("c" 
                         "python"
-                        "haskell"
+                        "haskell-lang-specific"
                         "web"
                         "lisp"
-                        "latex")
+                        "latex"
+                        "idris"
+                        "java")
       do (load-config-file language))
 
 (add-to-list 'auto-mode-alist '("\\.qml\\'" . javascript-mode))
 
 ;; Keyboard shortcuts
+
+(defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
+
+(define-key my-keys-minor-mode-map (kbd "C-h") 'delete-backward-char)
+(define-key my-keys-minor-mode-map (kbd "M-h") 'backward-kill-word)
+(define-key my-keys-minor-mode-map (kbd "C-c c") 'compile)
+(define-key my-keys-minor-mode-map (kbd "C-x h") 'help-command)
+(define-key my-keys-minor-mode-map (kbd "C-x C-m") 'execute-extended-command)
+(define-key my-keys-minor-mode-map (kbd "C-c C-m") 'execute-extended-command)
+(define-key my-keys-minor-mode-map (kbd "C-c o") 'ff-find-other-file)
+(define-key my-keys-minor-mode-map (kbd "C-c r") 'revert-buffer)
+(define-key my-keys-minor-mode-map (kbd "C-c l") 'hl-line-mode)
+(define-key my-keys-minor-mode-map (kbd "C-x C-b") 'iswitchb-buffer)
+(define-key my-keys-minor-mode-map (kbd "<C-return>") 'dabbrev-expand)
+(define-key my-keys-minor-mode-map (kbd "C-.") 'toggle-case)
+(define-key my-keys-minor-mode-map (kbd "C-+") 'evil-numbers/inc-at-pt)
+(define-key my-keys-minor-mode-map (kbd "<C-kp-add>") 'evil-numbers/inc-at-pt)
+(define-key my-keys-minor-mode-map (kbd "C--") 'evil-numbers/dec-at-pt)
+(define-key my-keys-minor-mode-map (kbd "<C-kp-subtract>") 'evil-numbers/dec-at-pt)
+
+(define-key my-keys-minor-mode-map (kbd "C-c o") 'other-window)
+(define-key my-keys-minor-mode-map (kbd "C-x C-o") 'other-window)
+(define-key my-keys-minor-mode-map (kbd "C-c C-o") 'other-window)
+(define-key my-keys-minor-mode-map (kbd "M-P") 'scroll-down-line)
+(define-key my-keys-minor-mode-map (kbd "M-N") 'scroll-up-line)
+
+;; (key-chord-define evil-insert-state-map "kj" 'evil-normal-state)
+;; (define-key evil-insert-state-map "\C-y" nil)
+;; (define-key evil-insert-state-map "\C-n" nil)
+;; (define-key evil-insert-state-map "\C-e" nil)
+;; (define-key evil-insert-state-map (kbd "C-e") nil)
+;; (define-key evil-insert-state-map "\C-p" nil)
+
+(define-minor-mode my-keys-minor-mode
+  "A minor mode so that my key settings override annoying major modes."
+  t " my-keys" 'my-keys-minor-mode-map)
+
+(defadvice load (after give-my-keybindings-priority)
+  "Try to ensure that my keybindings always have priority."
+  (if (not (eq (car (car minor-mode-map-alist)) 'my-keys-minor-mode))
+      (let ((mykeys (assq 'my-keys-minor-mode minor-mode-map-alist)))
+        (assq-delete-all 'my-keys-minor-mode minor-mode-map-alist)
+        (add-to-list 'minor-mode-map-alist mykeys))))
+(ad-activate 'load)
+
+(my-keys-minor-mode 1)
+
 (global-set-key (kbd "RET") 'newline-and-indent)
 (add-hook 'LaTeX-mode-hook
           (lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
 (add-hook 'ruby-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
 (add-hook 'feature-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
-(global-set-key (kbd "C-h") 'delete-backward-char)
-(global-set-key (kbd "M-h") 'backward-kill-word)
-(global-set-key (kbd "C-c c") 'compile)
-(global-set-key (kbd "C-x h") 'help-command)
-(global-set-key (kbd "C-x C-m") 'execute-extended-command)
-(global-set-key (kbd "C-c C-m") 'execute-extended-command)
-(global-set-key (kbd "C-c o") 'ff-find-other-file)
-(global-set-key (kbd "C-c g") 'gdb-many-windows)
-(global-set-key (kbd "C-c r") 'revert-buffer)
-(global-set-key (kbd "C-x C-u") 'undo)
-(global-set-key (kbd "C-c l") 'hl-line-mode)
-(global-set-key (kbd "C-x C-b") 'iswitchb-buffer)
-(global-set-key (kbd "<C-return>") 'dabbrev-expand)
-(global-set-key (kbd "C-c s") 'eshell)
-
-;; I've messed up C-x o enough times.
-(global-set-key (kbd "C-c o") 'other-window)
-(global-set-key (kbd "C-x C-o") 'other-window)
-(global-set-key (kbd "C-c C-o") 'other-window)
-
-(global-set-key (kbd "C-c b")  'windmove-left)
-(global-set-key (kbd "C-c f") 'windmove-right)
-(global-set-key (kbd "C-c p")    'windmove-up)
-(global-set-key (kbd "C-c n")  'windmove-down)
-(setq windmove-wrap-around t)
-
-(add-hook 'ruby-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
 
 ;; Mac Compatibility (Terminal is a pain)
 (global-set-key (kbd "M-[ 5 d") 'backward-word)
@@ -129,4 +180,31 @@
 	  (lambda ()
 	    (local-set-key (kbd "M-[ 5 d") 'paredit-forward-barf-sexp)
 	    (local-set-key (kbd "M-[ 5 c") 'paredit-forward-slurp-sexp)))
+
+;; Windows stuff
+(defun android-start ()
+  (interactive)
+  (when (eq system-type 'windows-nt)
+    (require 'cygwin-mount)
+    (setq cygwin-mount-cygwin-bin-directory "C:/cygwin64/bin")
+    (cygwin-mount-activate)
+    (add-hook 'comint-output-filter-functions
+              'shell-strip-ctrl-m nil t)
+    (add-hook 'comint-output-filter-functions
+              'comint-watch-for-password-prompt nil t)
+    (setq explicit-shell-file-name "C:/cygwin64/bin/bash.exe")
+    (setq shell-file-name explicit-shell-file-name))
+
+  (when (eq system-type 'windows-nt)
+    (progn (setq android-ndk-root-path "C:/Users/mitchell/AppData/Local/Android/android-ndk-r9d")
+           (setq android-sdk-root-path "C:/Users/mitchell/AppData/Local/Android/android-sdk"))
+    (add-to-list 'load-path "C:/Users/mitchell/AppData/Local/Android/android-emacs-toolkit")
+    (require 'androidmk-mode)
+    (add-hook 'androidmk-mode-hook
+              (lambda ()
+                (progn (local-set-key [M-f5] 'androidndk-build)
+                       (local-set-key [M-S-f5] 'androidndk-rebuild)
+                       (local-set-key [C-f5] 'androidsdk-build)
+                       (local-set-key [C-S-f5] 'androidsdk-rebuild)))))
+  (setq android-default-package "com.infreefall"))
 
