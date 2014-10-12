@@ -27,8 +27,16 @@
     yasnippet-bundle
     elscreen
     projectile
-    cygwin-mount
-    smex))
+    smex
+    idris-mode
+    rust-mode
+    evil
+    evil-numbers
+    evil-matchit
+    evil-surround
+    key-chord
+    emacs-eclim
+    ))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
 	when (not (package-installed-p p)) do (return nil)
@@ -71,11 +79,23 @@
 (tool-bar-mode 0)
 (scroll-bar-mode -1)
 (smex-initialize)
+(column-number-mode 1)
+(global-undo-tree-mode)
+;; (evil-mode 1)
+;; (global-evil-matchit-mode 1)
+;; ( key-chord-mode 1)
 
 (setq scroll-step            1
       scroll-conservatively  10000)
 
 (projectile-global-mode)
+
+;; Just helpful
+(defun sudo-find-file (file-name)
+  "Like find file, but opens the file as root."
+  (interactive "FSudo Find File: ")
+  (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
+    (find-file tramp-file-name)))
 
 ;; Best theme I've found so far
 (load-theme 'zenburn t)
@@ -85,10 +105,12 @@
 
 (loop for language in '("c" 
                         "python"
-                        "haskell"
+                        "haskell-lang-specific"
                         "web"
                         "lisp"
-                        "latex")
+                        "latex"
+                        "idris"
+                        "java")
       do (load-config-file language))
 
 (add-to-list 'auto-mode-alist '("\\.qml\\'" . javascript-mode))
@@ -109,6 +131,10 @@
 (define-key my-keys-minor-mode-map (kbd "C-x C-b") 'iswitchb-buffer)
 (define-key my-keys-minor-mode-map (kbd "<C-return>") 'dabbrev-expand)
 (define-key my-keys-minor-mode-map (kbd "C-.") 'toggle-case)
+(define-key my-keys-minor-mode-map (kbd "C-+") 'evil-numbers/inc-at-pt)
+(define-key my-keys-minor-mode-map (kbd "<C-kp-add>") 'evil-numbers/inc-at-pt)
+(define-key my-keys-minor-mode-map (kbd "C--") 'evil-numbers/dec-at-pt)
+(define-key my-keys-minor-mode-map (kbd "<C-kp-subtract>") 'evil-numbers/dec-at-pt)
 
 (define-key my-keys-minor-mode-map (kbd "M-x") 'smex)
 (define-key my-keys-minor-mode-map (kbd "M-X") 'smex-major-mode-commands)
@@ -116,6 +142,15 @@
 (define-key my-keys-minor-mode-map (kbd "C-c o") 'other-window)
 (define-key my-keys-minor-mode-map (kbd "C-x C-o") 'other-window)
 (define-key my-keys-minor-mode-map (kbd "C-c C-o") 'other-window)
+(define-key my-keys-minor-mode-map (kbd "M-P") 'scroll-down-line)
+(define-key my-keys-minor-mode-map (kbd "M-N") 'scroll-up-line)
+
+;; (key-chord-define evil-insert-state-map "kj" 'evil-normal-state)
+;; (define-key evil-insert-state-map "\C-y" nil)
+;; (define-key evil-insert-state-map "\C-n" nil)
+;; (define-key evil-insert-state-map "\C-e" nil)
+;; (define-key evil-insert-state-map (kbd "C-e") nil)
+;; (define-key evil-insert-state-map "\C-p" nil)
 
 (define-minor-mode my-keys-minor-mode
   "A minor mode so that my key settings override annoying major modes."
@@ -171,7 +206,6 @@
                        (local-set-key [C-f5] 'androidsdk-build)
                        (local-set-key [C-S-f5] 'androidsdk-rebuild)))))
   (setq android-default-package "com.infreefall"))
-
 
 (require 'guide-key)
 (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c p" "C-x h"))

@@ -1,0 +1,19 @@
+ls
+ls
+find-file build.xml 
+winner
+string/ends-with
+string/ends-with "hi" "i"
+string/ends-with "hi" "ii"
+man ls
+cd ~/.emacs.d/
+git status
+find-file .gitignore 
+find-file abbrev_defs 
+git rm ac-comphist.dat 
+git rm -f ac-comphist.dat 
+git add abbrev_defs jdee-2.4.1/ init.el.orig
+git status
+git commit -a
+git pull
+git pull

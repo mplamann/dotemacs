@@ -1,5 +1,5 @@
-(load-file "~/.emacs.d/lisp/geiser/elisp/geiser.el")
-(require 'quack)
+;; (load-file "~/.emacs.d/lisp/geiser/elisp/geiser.el")
+;; (require 'quack)
 (autoload 'paredit-mode "paredit"
   "Minor mode for pseudo-structurally editing Lisp code." t)
 (add-hook 'emacs-lisp-mode-hook       (lambda () (paredit-mode +1)))
@@ -8,6 +8,15 @@
 (add-hook 'scheme-mode-hook           (lambda () (paredit-mode +1)))
 (add-hook 'quack-mode-hook            (lambda () (paredit-mode +1)))
 (add-hook 'geiser-repl-mode-hook      (lambda () (paredit-mode +1)))
-(setq scheme-program-name "racket")
+;; (setq scheme-program-name "racket")
+(require 'xscheme)
+(add-hook 'lisp-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c s") 'xscheme-send-buffer)
+            (local-set-key (kbd "C-c l") 'xscheme-send-current-line)
+            (local-set-key (kbd "C-c C-s") 'xscheme-send-buffer)
+            (local-set-key (kbd "C-c C-l") 'xscheme-send-current-line)
+            (local-set-key (kbd "C-c ,") 'xscheme-send-previous-expression)
+            ))
 
 (provide 'lisp-config)
