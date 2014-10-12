@@ -37,6 +37,7 @@
     key-chord
     emacs-eclim
     dtrt-indent
+    sml-mode
     ))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
