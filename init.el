@@ -36,6 +36,7 @@
     evil-surround
     key-chord
     emacs-eclim
+    dtrt-indent
     ))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
@@ -52,11 +53,13 @@
       (package-install p))))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+(add-to-list 'load-path "~/.emacs.d/")
 
 ;; Requires
 (require 'git)
 (require 'wc-mode)
 (require 'yasnippet-bundle)
+(require 'cmu-sml)
 (require 'toggle-case)
 
 ;; General emacs settings
@@ -81,6 +84,7 @@
 (smex-initialize)
 (column-number-mode 1)
 (global-undo-tree-mode)
+(dtrt-indent-mode 1)
 ;; (evil-mode 1)
 ;; (global-evil-matchit-mode 1)
 ;; ( key-chord-mode 1)
@@ -103,7 +107,7 @@
 (defun load-config-file (file)
   (load-file (concat "~/.emacs.d/language-specific/" file ".el")))
 
-(loop for language in '("c" 
+(loop for language in '("c"
                         "python"
                         "haskell-lang-specific"
                         "web"
