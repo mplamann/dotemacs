@@ -27,6 +27,7 @@
     yasnippet-bundle
     elscreen
     projectile
+    smex
     idris-mode
     rust-mode
     evil
@@ -34,8 +35,10 @@
     evil-matchit
     evil-surround
     key-chord
+    emacs-eclim
     dtrt-indent
     helm
+    sml-mode
     ))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
@@ -52,11 +55,13 @@
       (package-install p))))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+(add-to-list 'load-path "~/.emacs.d/")
 
 ;; Requires
 (require 'git)
 (require 'wc-mode)
 (require 'yasnippet-bundle)
+(require 'cmu-sml)
 (require 'toggle-case)
 (require 'rtf-mode)
 
@@ -79,6 +84,7 @@
 ;(desktop-save-mode 1) ;; persistent sessions
 (tool-bar-mode 0)
 (scroll-bar-mode -1)
+(smex-initialize)
 (column-number-mode 1)
 (global-undo-tree-mode)
 (dtrt-indent-mode 1)
@@ -104,7 +110,7 @@
 (defun load-config-file (file)
   (load-file (concat "~/.emacs.d/language-specific/" file ".el")))
 
-(loop for language in '("c" 
+(loop for language in '("c"
                         "python"
                         "haskell-lang-specific"
                         "web"
@@ -136,6 +142,9 @@
 (define-key my-keys-minor-mode-map (kbd "<C-kp-add>") 'evil-numbers/inc-at-pt)
 (define-key my-keys-minor-mode-map (kbd "C--") 'evil-numbers/dec-at-pt)
 (define-key my-keys-minor-mode-map (kbd "<C-kp-subtract>") 'evil-numbers/dec-at-pt)
+
+(define-key my-keys-minor-mode-map (kbd "M-x") 'smex)
+(define-key my-keys-minor-mode-map (kbd "M-X") 'smex-major-mode-commands)
 
 (define-key my-keys-minor-mode-map (kbd "C-c o") 'other-window)
 (define-key my-keys-minor-mode-map (kbd "C-x C-o") 'other-window)
@@ -205,3 +214,6 @@
                        (local-set-key [C-S-f5] 'androidsdk-rebuild)))))
   (setq android-default-package "com.infreefall"))
 
+(require 'guide-key)
+(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c p" "C-x h"))
+(guide-key-mode 1)
