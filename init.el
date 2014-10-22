@@ -35,6 +35,7 @@
     evil-surround
     key-chord
     dtrt-indent
+    helm
     ))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
@@ -57,6 +58,7 @@
 (require 'wc-mode)
 (require 'yasnippet-bundle)
 (require 'toggle-case)
+(require 'rtf-mode)
 
 ;; General emacs settings
 
