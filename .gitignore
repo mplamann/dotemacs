@@ -4,4 +4,5 @@ session.*
 .emacs.desktop*
 ac-comphist.dat
 projectile-bookmarks.eld
+image-dired*
 

@@ -39,6 +39,7 @@
     dtrt-indent
     helm
     sml-mode
+    guide-key
     ))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
@@ -64,6 +65,7 @@
 (require 'cmu-sml)
 (require 'toggle-case)
 (require 'rtf-mode)
+(require 'helm-config)
 
 ;; General emacs settings
 
@@ -79,7 +81,7 @@
       (remq 'process-kill-buffer-query-function
             kill-buffer-query-functions))
 
-(iswitchb-mode 1) ;; improved buffer switching
+; (iswitchb-mode 1) ;; improved buffer switching
 (menu-bar-mode 0)
 ;(desktop-save-mode 1) ;; persistent sessions
 (tool-bar-mode 0)
@@ -88,6 +90,7 @@
 (column-number-mode 1)
 (global-undo-tree-mode)
 (dtrt-indent-mode 1)
+(helm-mode 1)
 ;; (evil-mode 1)
 ;; (global-evil-matchit-mode 1)
 ;; ( key-chord-mode 1)
