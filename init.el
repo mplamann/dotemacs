@@ -38,6 +38,7 @@
     emacs-eclim
     dtrt-indent
     helm
+    helm-hoogle
     sml-mode
     guide-key
     ))
@@ -145,6 +146,7 @@
 (define-key my-keys-minor-mode-map (kbd "<C-kp-add>") 'evil-numbers/inc-at-pt)
 (define-key my-keys-minor-mode-map (kbd "C--") 'evil-numbers/dec-at-pt)
 (define-key my-keys-minor-mode-map (kbd "<C-kp-subtract>") 'evil-numbers/dec-at-pt)
+(define-key my-keys-minor-mode-map (kbd "C-c h") 'helm-hoogle)
 
 (define-key my-keys-minor-mode-map (kbd "M-x") 'smex)
 (define-key my-keys-minor-mode-map (kbd "M-X") 'smex-major-mode-commands)
@@ -220,3 +222,20 @@
 (require 'guide-key)
 (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c p" "C-x h"))
 (guide-key-mode 1)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(Man-notify-method (quote pushy))
+ '(haskell-process-auto-import-loaded-modules t)
+ '(haskell-process-log t)
+ '(haskell-process-suggest-remove-import-lines t)
+ '(haskell-process-type (quote cabal-repl))
+ '(haskell-tags-on-save t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
