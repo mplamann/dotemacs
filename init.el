@@ -24,7 +24,6 @@
     eimp
     web-mode
     ruby-mode
-    yasnippet-bundle
     elscreen
     projectile
     smex
@@ -41,6 +40,7 @@
     helm-hoogle
     sml-mode
     guide-key
+    yasnippet
     ))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
@@ -62,7 +62,6 @@
 ;; Requires
 (require 'git)
 (require 'wc-mode)
-(require 'yasnippet-bundle)
 (require 'cmu-sml)
 (require 'toggle-case)
 (require 'rtf-mode)
