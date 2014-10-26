@@ -147,7 +147,7 @@
 (define-key my-keys-minor-mode-map (kbd "<C-kp-subtract>") 'evil-numbers/dec-at-pt)
 (define-key my-keys-minor-mode-map (kbd "C-c h") 'helm-hoogle)
 
-(define-key my-keys-minor-mode-map (kbd "M-x") 'smex)
+(define-key my-keys-minor-mode-map (kbd "M-x") 'helm-M-x)
 (define-key my-keys-minor-mode-map (kbd "M-X") 'smex-major-mode-commands)
 
 (define-key my-keys-minor-mode-map (kbd "C-c o") 'other-window)
@@ -156,8 +156,11 @@
 (define-key my-keys-minor-mode-map (kbd "M-P") 'scroll-down-line)
 (define-key my-keys-minor-mode-map (kbd "M-N") 'scroll-up-line)
 
-(key-chord-define my-keys-minor-mode-map "qj" 'windmove-left)
-(key-chord-define my-keys-minor-mode-map "qk" 'windmove-right)
+(key-chord-define my-keys-minor-mode-map "lj" 'windmove-left)
+(key-chord-define my-keys-minor-mode-map "lk" 'windmove-right)
+(key-chord-define my-keys-minor-mode-map "ln" 'windmove-down)
+(key-chord-define my-keys-minor-mode-map "lm" 'windmove-up)
+
 
 ;; (key-chord-define evil-insert-state-map "kj" 'evil-normal-state)
 ;; (define-key evil-insert-state-map "\C-y" nil)
