@@ -93,7 +93,7 @@
 (helm-mode 1)
 ;; (evil-mode 1)
 ;; (global-evil-matchit-mode 1)
-;; ( key-chord-mode 1)
+(key-chord-mode 1)
 
 (setq scroll-step            1
       scroll-conservatively  10000)
@@ -155,6 +155,9 @@
 (define-key my-keys-minor-mode-map (kbd "C-c C-o") 'other-window)
 (define-key my-keys-minor-mode-map (kbd "M-P") 'scroll-down-line)
 (define-key my-keys-minor-mode-map (kbd "M-N") 'scroll-up-line)
+
+(key-chord-define my-keys-minor-mode-map "qj" 'windmove-left)
+(key-chord-define my-keys-minor-mode-map "qk" 'windmove-right)
 
 ;; (key-chord-define evil-insert-state-map "kj" 'evil-normal-state)
 ;; (define-key evil-insert-state-map "\C-y" nil)
