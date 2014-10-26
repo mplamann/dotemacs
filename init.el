@@ -156,10 +156,14 @@
 (define-key my-keys-minor-mode-map (kbd "M-P") 'scroll-down-line)
 (define-key my-keys-minor-mode-map (kbd "M-N") 'scroll-up-line)
 
+(setq key-chord-two-keys-delay .025
+      key-chord-one-key-delay .020)
+
 (key-chord-define my-keys-minor-mode-map "lj" 'windmove-left)
 (key-chord-define my-keys-minor-mode-map "lk" 'windmove-right)
 (key-chord-define my-keys-minor-mode-map "ln" 'windmove-down)
 (key-chord-define my-keys-minor-mode-map "lm" 'windmove-up)
+(key-chord-define my-keys-minor-mode-map "ax" 'switch-to-buffer)
 
 
 ;; (key-chord-define evil-insert-state-map "kj" 'evil-normal-state)
