@@ -41,6 +41,7 @@
     sml-mode
     guide-key
     yasnippet
+    ghc
     ))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
@@ -57,7 +58,7 @@
       (package-install p))))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
-(add-to-list 'load-path "~/.emacs.d/")
+;; (add-to-list 'load-path "~/.emacs.d/")
 
 ;; Requires
 (require 'git)
@@ -134,7 +135,7 @@
 (define-key my-keys-minor-mode-map (kbd "C-c c") 'compile)
 (define-key my-keys-minor-mode-map (kbd "C-x h") 'help-command)
 (define-key my-keys-minor-mode-map (kbd "C-x C-m") 'execute-extended-command)
-(define-key my-keys-minor-mode-map (kbd "C-c C-m") 'execute-extended-command)
+; (define-key my-keys-minor-mode-map (kbd "C-c C-m") 'execute-extended-command)
 (define-key my-keys-minor-mode-map (kbd "C-c o") 'ff-find-other-file)
 (define-key my-keys-minor-mode-map (kbd "C-c r") 'revert-buffer)
 (define-key my-keys-minor-mode-map (kbd "C-c l") 'hl-line-mode)

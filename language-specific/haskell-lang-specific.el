@@ -6,6 +6,12 @@
 
 (eval-after-load 'haskell-mode
   '(define-key haskell-mode-map [f8] 'haskell-navigate-imports))
+(if (executable-find "ghc-mod")
+    (progn
+      (autoload 'ghc-init "ghc" nil t)
+      (autoload 'ghc-debug "ghc" nil t)
+      (add-hook 'haskell-mode-hook (lambda () (ghc-init))))
+  (message "ghc-mod not in PATH."))
 
 (custom-set-variables '(haskell-tags-on-save t))
 
