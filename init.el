@@ -42,6 +42,10 @@
     guide-key
     yasnippet
     ghc
+
+    outorg
+    outshine
+    navi-mode
     ))
 (defun prelude-packages-installed-p ()
   (loop for p in prelude-packages
@@ -228,6 +232,13 @@
                        (local-set-key [C-f5] 'androidsdk-build)
                        (local-set-key [C-S-f5] 'androidsdk-rebuild)))))
   (setq android-default-package "com.infreefall"))
+
+;; outshine
+(defvar outline-minor-mode-prefix "\C-z")
+(require 'outshine)
+(add-hook 'outline-minor-mode-hook 'outshine-hook-function)
+(add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
+(add-hook 'python-mode-hook 'outline-minor-mode)
 
 (require 'guide-key)
 (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c p" "C-x h"))
