@@ -142,7 +142,6 @@
 ; (define-key my-keys-minor-mode-map (kbd "C-c C-m") 'execute-extended-command)
 (define-key my-keys-minor-mode-map (kbd "C-c o") 'ff-find-other-file)
 (define-key my-keys-minor-mode-map (kbd "C-c r") 'revert-buffer)
-(define-key my-keys-minor-mode-map (kbd "C-c l") 'hl-line-mode)
 (define-key my-keys-minor-mode-map (kbd "C-x C-b") 'iswitchb-buffer)
 (define-key my-keys-minor-mode-map (kbd "<C-return>") 'dabbrev-expand)
 (define-key my-keys-minor-mode-map (kbd "C-.") 'toggle-case)
@@ -151,6 +150,7 @@
 (define-key my-keys-minor-mode-map (kbd "C--") 'evil-numbers/dec-at-pt)
 (define-key my-keys-minor-mode-map (kbd "<C-kp-subtract>") 'evil-numbers/dec-at-pt)
 (define-key my-keys-minor-mode-map (kbd "C-c h") 'helm-hoogle)
+(define-key my-keys-minor-mode-map (kbd "C-c l") 'org-store-link)
 
 (define-key my-keys-minor-mode-map (kbd "M-x") 'helm-M-x)
 (define-key my-keys-minor-mode-map (kbd "M-X") 'smex-major-mode-commands)
@@ -260,3 +260,16 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+;; Place auto saves in /tmp
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
+(defun open-213 ()
+  (interactive)
+  (find-file "/afs/andrew.cmu.edu/usr/mplamann/private/15213"))
+
+(setq org-return-follows-link t)
+(setq org-startup-with-inline-images t)
